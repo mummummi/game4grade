@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script>(function(){var P='g4-',S=Storage.prototype,G=S.getItem,T=S.setItem,R=S.removeItem;S.getItem=function(k){return G.call(this,P+k)};S.setItem=function(k,v){return T.call(this,P+k,v)};S.removeItem=function(k){return R.call(this,P+k)}})();</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>우리 고장 탐험대 · 4학년</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root{--main:#3b82c4;--ink:#3a3150;--soft:#fff8ef}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Gowun Dodum',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--soft),#fff 40%,color-mix(in srgb,var(--main) 18%,#fff));min-height:100vh;font-size:19px;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.btn,.opt,.tok,.cell,.coin,.mc,.pad button,.top,.cnt,.bh{font-family:'Jua','Gowun Dodum',sans-serif;font-weight:400}
+button{font:inherit;color:inherit;cursor:pointer}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:10px 14px;background:#ffffffd9;backdrop-filter:blur(6px);border-bottom:3px solid color-mix(in srgb,var(--main) 40%,#fff)}
+.top a{color:var(--ink);text-decoration:none;background:#fff;border:2px solid #e8e1f0;border-radius:999px;padding:5px 12px;font-size:16px}
+.top .t{flex:1;font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .pill{background:var(--main);color:#fff;border-radius:999px;padding:4px 12px;font-size:15px;white-space:nowrap}
+.top .ib{background:#fff;border:2px solid #e8e1f0;border-radius:50%;width:40px;height:40px;font-size:20px;padding:0}
+#app{max-width:880px;margin:0 auto;padding:16px 14px 60px}
+.card{background:#fff;border-radius:28px;padding:26px 20px;box-shadow:0 8px 0 color-mix(in srgb,var(--main) 35%,#fff),0 14px 30px #0000000f;text-align:center}
+.big{font-size:84px;line-height:1.1;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+h1{font-size:36px;margin:8px 0;color:var(--main);text-shadow:0 2px 0 #0000000d}
+h2{font-size:26px;margin:6px 0}
+.lvp{display:inline-block;background:color-mix(in srgb,var(--main) 15%,#fff);border-radius:999px;padding:4px 14px;margin:4px 0 8px}
+.story{font-size:20px;line-height:1.7;max-width:620px;margin:10px auto}
+.map{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:18px 0}
+.mp{width:96px;padding:10px 4px;border-radius:18px;background:#f6f3fa;font-size:34px;line-height:1.2}
+.mp small{display:block;font-size:14px;margin-top:4px}
+.mp.done{background:#e3f8e7;outline:3px solid #7bd389}
+.lvinfo{color:#7a6f8c}
+.btn{display:inline-block;border:none;border-radius:20px;padding:14px 28px;font-size:23px;background:#efeaf6;margin:6px;text-decoration:none;color:var(--ink);box-shadow:0 5px 0 #d6cfe2}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #d6cfe2}
+.btn.go{background:var(--main);color:#fff;box-shadow:0 5px 0 color-mix(in srgb,var(--main) 70%,#000)}
+.btn.ghost{background:#fff;border:2px solid #e8e1f0;box-shadow:none;font-size:18px}
+.stagehead{text-align:center;margin-bottom:8px}
+.dots{display:flex;justify-content:center;gap:6px;margin-bottom:4px}
+.dots span{font-size:22px;width:40px;height:40px;line-height:40px;border-radius:50%;background:#efeaf6;opacity:.55}
+.dots span.d{background:#d9f5de;opacity:1}
+.dots span.c{background:var(--main);opacity:1;transform:scale(1.15)}
+.prompt{display:flex;align-items:center;gap:10px;background:#fff;border-radius:20px;padding:12px 16px;font-size:21px;line-height:1.5;box-shadow:0 4px 0 #ece6f3;margin:8px 0}
+.prompt span{flex:1}
+.spk{flex:none;border:none;background:color-mix(in srgb,var(--main) 18%,#fff);border-radius:50%;width:46px;height:46px;font-size:22px}
+.tip{background:#fff7d6;border:2px dashed #f3cf55;border-radius:16px;padding:10px 14px;margin:8px 0;font-size:18px}
+.body{margin-top:10px}
+.body>.btn,.body>.peek{display:table;margin:12px auto}
+.cnt{text-align:center;font-size:18px;color:#8a7f9b;margin:4px 0}
+.q{text-align:center;font-size:24px;line-height:1.6;margin:8px 0 12px}
+.pic{text-align:center;font-size:46px;line-height:1.35;margin:6px 0 10px;letter-spacing:4px}
+.seq{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0 16px}
+.seq span{min-width:62px;height:62px;line-height:62px;padding:0 6px;border-radius:16px;background:#fff;font-size:32px;box-shadow:0 4px 0 #ece6f3;font-family:'Jua'}
+.seq .blank{background:#fff3c4;border:3px dashed #f0b429;color:#c08a00}
+.seq .blank.filled{background:#dff7e3;border:3px solid #6bcb77;color:var(--ink)}
+.opts{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opt{min-width:96px;min-height:72px;padding:10px 18px;border:none;border-radius:20px;background:#fff;font-size:30px;box-shadow:0 6px 0 #e3dcec;transition:transform .1s}
+.opt.long{font-size:22px}
+.opt:active{transform:translateY(3px)}
+.opt.ok{background:#c9f2cf;box-shadow:0 6px 0 #7bd389}
+.opt:disabled{opacity:.35}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.hint{animation:hint 1s ease-in-out 2;outline:4px solid #ffc83d!important;outline-offset:3px}
+@keyframes hint{50%{transform:scale(1.1)}}
+/* drag & drop */
+.pool{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;min-height:80px;padding:12px;border-radius:22px;background:#ffffffb3;border:3px dashed #e3dcec}
+.tok{touch-action:none;user-select:none;-webkit-user-select:none;background:#fff;border-radius:18px;padding:8px 14px;font-size:34px;line-height:1.15;box-shadow:0 5px 0 #e0d8ea;cursor:grab;text-align:center;min-width:72px}
+.tok small{display:block;font-family:'Gowun Dodum';font-size:15px}
+.tok.txt{font-size:24px;padding:14px 16px}
+.tok.sel{outline:4px solid var(--main);transform:translateY(-4px) scale(1.06)}
+.tok.lift{opacity:.3}
+.tok.used{cursor:default;box-shadow:none;background:#f3fff4;font-size:26px;padding:4px 8px;min-width:0}
+.tok.used.txt{font-size:18px}
+.dragghost{position:fixed;z-index:50;pointer-events:none;transform:translate(-50%,-50%) scale(1.12) rotate(-4deg);box-shadow:0 12px 24px #0003}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px}
+.bin{border-radius:22px;background:#fff;border:3px solid color-mix(in srgb,var(--main) 35%,#fff);min-height:130px;padding:8px;transition:background .2s}
+.bin .bh{font-size:22px;padding:6px;border-radius:14px;background:color-mix(in srgb,var(--main) 14%,#fff);text-align:center}
+.bin .bh small{font-family:'Gowun Dodum';font-size:16px}
+.bin .got{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding-top:8px}
+.slots{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:6px}
+.slot{min-height:90px;min-width:96px;display:flex;align-items:center;justify-content:center;border-style:dashed}
+.slot b{font-size:28px;color:#c8bed6}
+.slot.fill{border-style:solid;background:#f3fff4}
+.arrowlbl{text-align:center;font-size:18px;color:#8a7f9b;margin:12px 0 2px}
+/* memory */
+.mem{display:grid;gap:10px;max-width:640px;margin:0 auto}
+.mc{position:relative;aspect-ratio:1/1;border:none;border-radius:18px;background:transparent;perspective:600px;padding:0}
+.mc span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:18px;backface-visibility:hidden;transition:transform .35s;font-size:clamp(18px,4.6vw,30px);line-height:1.1;padding:4px;word-break:keep-all}
+.mc .f{background:#fff;box-shadow:0 5px 0 #e0d8ea;transform:rotateY(180deg)}
+.mc .b{background:var(--main);color:#fff;font-size:30px;box-shadow:0 5px 0 color-mix(in srgb,var(--main) 70%,#000)}
+.mc.up .f{transform:rotateY(0)}.mc.up .b{transform:rotateY(180deg)}
+.mc.ok .f{background:#c9f2cf;box-shadow:0 5px 0 #7bd389}
+.peek{display:block;margin:12px auto 0}
+/* clock */
+.clkw{display:flex;justify-content:center;margin:6px 0}
+.clk{width:min(70vw,250px);height:auto;touch-action:none;user-select:none}
+.clk .face{fill:#fff;stroke:var(--main);stroke-width:6}
+.clk .tk{stroke:#c8bed6;stroke-width:1.5}.clk .tk5{stroke:#7a6f8c;stroke-width:3}
+.clk .num{font:20px Jua,sans-serif;text-anchor:middle;fill:var(--ink)}
+.clk .hh{stroke:#ff6b6b;stroke-width:8;stroke-linecap:round}
+.clk .mh{stroke:#4d96ff;stroke-width:5;stroke-linecap:round}
+.clk .pin{fill:var(--ink)}
+.clk.set{cursor:grab}
+.cbtns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:8px 0}
+.cbtns button{border:none;border-radius:14px;padding:10px 14px;font-size:18px;background:#fff;box-shadow:0 4px 0 #e0d8ea;font-family:'Jua'}
+.cbtns .hb{color:#e04848}.cbtns .mb{color:#2f6fd6}
+.dig{text-align:center;font-family:'Jua';font-size:26px;color:#7a6f8c;min-height:34px}
+.legend{text-align:center;font-size:16px;color:#7a6f8c}
+.legend b.h{color:#e04848}.legend b.m{color:#2f6fd6}
+/* coins */
+.shop{display:flex;flex-direction:column;align-items:center;gap:4px;margin:6px 0}
+.shop .pic{margin:0}
+.price{display:inline-block;background:#fff3c4;border-radius:12px;padding:2px 12px;font-family:'Jua';font-size:28px}
+.bank{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:12px 0}
+.coin{border:none;border-radius:50%;width:74px;height:74px;font-size:22px;display:inline-flex;align-items:center;justify-content:center;flex-direction:column;line-height:1;box-shadow:inset 0 -5px 0 #0002,0 4px 0 #0001}
+.coin small{font-size:12px}
+.c10{background:#e8a467;color:#5a3415}.c50{background:#d9dde3;color:#3d4450;width:80px;height:80px}.c100{background:#cfd5dd;color:#2f3640;width:84px;height:84px}.c500{background:#e3e7ec;color:#2b313a;width:92px;height:92px;font-size:24px}
+.bill{display:inline-block;background:#c9e7c4;border:2px solid #8fbf87;border-radius:8px;padding:4px 12px;font-family:'Jua'}
+.tray{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;min-height:110px;border-style:dashed;margin-top:8px}
+.tray .coin{width:58px;height:58px;font-size:17px}
+.tray .empty{color:#b9afc8}
+.sum{text-align:center;font-family:'Jua';font-size:24px;min-height:32px;margin:6px 0}
+.msg{text-align:center;min-height:30px;font-size:19px;color:#c0392b}
+/* balloon */
+.bbar{display:flex;justify-content:center;gap:18px;font-family:'Jua';font-size:24px}
+.barea{position:relative;height:min(62vh,440px);overflow:hidden;border-radius:24px;background:linear-gradient(#bfe6ff,#e9f7ff 70%,#d4f1c5);margin-top:8px;touch-action:manipulation}
+.bal{position:absolute;bottom:-100px;width:86px;height:100px;border-radius:50% 50% 48% 48%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Jua';font-size:26px;text-shadow:0 2px 0 #0003;cursor:pointer;box-shadow:inset -10px -12px 0 #0000001a;user-select:none;padding:4px;text-align:center;line-height:1.05;word-break:keep-all}
+.bal.w{font-size:20px}
+.bal::after{content:'';position:absolute;bottom:-26px;left:50%;width:2px;height:26px;background:#0004}
+.bal.pop{animation:pop .3s forwards}@keyframes pop{to{transform:scale(1.6);opacity:0}}
+.bal.boo{animation:shake .4s;filter:grayscale(1)}
+.bal.hint{outline:5px solid #ffc83d}
+.fail{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#ffffffcc;font-family:'Jua';font-size:28px;gap:10px;z-index:3}
+/* path */
+.grid{display:grid;gap:8px;max-width:520px;margin:6px auto}
+.cell{aspect-ratio:1/1;border:none;border-radius:16px;background:#fff;font-size:clamp(18px,5vw,28px);box-shadow:0 5px 0 #e0d8ea;position:relative;padding:0}
+.cell.nb{background:#fffbe3;outline:3px dashed #f0c64d}
+.cell.on{background:#6bcb77;color:#fff;box-shadow:0 5px 0 #3f9b4b}
+.cell.start::before{content:'🚩';position:absolute;top:-12px;left:-6px;font-size:22px}
+.cell.goal::before{content:'🏁';position:absolute;top:-12px;right:-6px;font-size:22px}
+/* find */
+.farea{position:relative;height:min(58vh,420px);border-radius:24px;background:radial-gradient(circle at 30% 20%,#fff,#ffeedd);overflow:hidden;box-shadow:inset 0 0 0 3px #f2dcc4}
+.fi{position:absolute;border:none;background:none;padding:0;line-height:1;transform:translate(-50%,-50%)}
+.fi.found{animation:pop2 .4s forwards}@keyframes pop2{to{transform:translate(-50%,-50%) scale(1.8);opacity:0}}
+/* room */
+.inv{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;font-family:'Jua';font-size:20px;margin-bottom:8px}
+.key{background:#fff;border-radius:999px;padding:4px 14px;box-shadow:0 3px 0 #e0d8ea;border:3px solid var(--c,#ddd);font-size:22px}
+.key.empty{opacity:.55;border-style:dashed}
+.scene{position:relative;height:min(56vh,400px);border-radius:26px;overflow:hidden;box-shadow:inset 0 -60px 0 #0000000d,0 8px 0 #0000000d}
+.obj{position:absolute;border:none;background:none;padding:0;line-height:1;transform:translate(-50%,-50%);filter:drop-shadow(0 4px 0 #0002);transition:transform .15s}
+.obj:hover{transform:translate(-50%,-50%) scale(1.12)}
+.obj.has::after{content:'❔';position:absolute;top:-8px;right:-14px;font-size:20px;animation:bob 1.6s infinite}
+.obj.solved::after{content:'✅';animation:none}
+.bubble{margin-top:10px;background:#fff;border-radius:20px;padding:12px 16px;font-size:20px;line-height:1.5;text-align:center;box-shadow:0 4px 0 #ece6f3;min-height:54px}
+.lockbox{text-align:center}
+.lq{font-size:20px;margin:6px 0 10px;line-height:1.5}
+.slots2{display:flex;justify-content:center;gap:10px;margin:8px 0}
+.slots2 div{width:64px;height:76px;border-radius:16px;background:#f6f3fa;border:3px solid #e0d8ea;font-family:'Jua';font-size:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.slots2 div small{font-size:18px;line-height:1}
+.pad{display:grid;grid-template-columns:repeat(5,64px);gap:8px;justify-content:center;margin-top:10px}
+.pad button{height:60px;border:none;border-radius:16px;background:#fff;box-shadow:0 4px 0 #e0d8ea;font-size:28px}
+.inrow{display:flex;justify-content:center;align-items:center;gap:8px;margin:8px 0}
+.inbox{font:28px Jua,sans-serif;width:min(60vw,260px);text-align:center;padding:10px 12px;border-radius:16px;border:3px solid color-mix(in srgb,var(--main) 45%,#fff);outline:none}
+.inbox:focus{border-color:var(--main)}.inbox.ok{background:#dff7e3;border-color:#6bcb77}
+.unit{font-family:Jua;font-size:24px}
+.note{border:2px solid #8fbf87;border-radius:10px;background:#c9e7c4;color:#24481f;padding:10px 14px;font-family:Jua;font-size:20px;box-shadow:0 4px 0 #0001}
+.note small{font-size:12px}.n5000{background:#f3d9b1;border-color:#d1a86a;color:#5a3b10}
+.tray .note{font-size:15px;padding:6px 8px}
+table.mapg{margin:4px auto;border-collapse:collapse;letter-spacing:0}table.mapg td{width:46px;height:46px;border:1px dashed #c9bfd8;font-size:28px;text-align:center;background:#fffdf5}
+table.mapg th{font-size:15px;color:#8a7f9b;padding:2px 4px}
+body.g3 .story,body.g4 .story{font-size:19px}
+/* overlay */
+.ov{position:fixed;inset:0;z-index:20;background:#2b23407a;display:flex;align-items:center;justify-content:center;padding:12px}
+.ov.hide{display:none}
+.ovbox{position:relative;background:var(--soft);border-radius:28px;padding:22px 16px 18px;width:min(760px,100%);max-height:94vh;overflow:auto;box-shadow:0 20px 50px #0004;text-align:center}
+.ovx{position:absolute;top:10px;right:10px;border:none;background:#fff;border-radius:50%;width:42px;height:42px;font-size:20px}
+.ovbox h3{font-size:26px;margin:4px 40px 6px}
+.conf{position:fixed;top:-40px;z-index:60;font-size:28px;pointer-events:none;animation:fall 2.2s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+body.g1{font-size:21px}
+body.g1 .prompt{font-size:23px}
+@media (max-width:520px){h1{font-size:30px}.opt{min-width:80px;font-size:26px}.pad{grid-template-columns:repeat(5,52px)}.pad button{height:54px}}
+</style>
+</head>
+<body class="g4">
+<div class="top"><a href="index.html">🏠</a><span class="t">🗺️ 우리 고장 탐험대</span><span class="pill" id="pill"></span><button class="ib" id="mute" title="소리">🔔</button></div>
+<div id="app"></div>
+<div class="ov hide" id="ov"><div class="ovbox"><button class="ovx" id="ovx">✕</button><div id="ovin"></div></div></div>
+<script>
+const GRADE=4,GAME='town',KEY='esc-town-v1',INFO={"title": "우리 고장 탐험대", "emoji": "🗺️"};
+const DATA={"easy": {"stages": [{"type": "room", "title": "시청", "icon": "🏛️", "bg": "linear-gradient(#e8ecff,#f6f7ff 58%,#d9d2c4 58%)", "objects": [{"e": "🗺️", "x": 18, "y": 30, "s": 56, "p": 0}, {"e": "🧭", "x": 48, "y": 72, "s": 52, "p": 1}, {"e": "🏛️", "x": 74, "y": 28, "s": 70, "m": "시청에서는 고장 사람들을 위한 일을 해요."}, {"e": "🪴", "x": 28, "y": 72, "s": 52, "m": "화분에 물이 촉촉해요."}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔴", "d": 3, "spec": {"type": "quiz", "title": "지도 읽기", "prompt": "시청 벽에 고장 지도가 붙어 있어요.", "rounds": [{"q": "🏫 학교에서 <b>북쪽</b>으로 3칸 가면 무엇이 있을까요?", "ans": "🏥 병원", "options": ["🏥 병원", "📚 도서관", "🏪 가게"], "pic": "<table class=\"mapg\"><tr><td>🏥</td><td></td><td>📚</td><td>🌳</td></tr><tr><td></td><td>🏛️</td><td></td><td></td></tr><tr><td>🚒</td><td></td><td></td><td>⛲</td></tr><tr><td>🏫</td><td></td><td>🏪</td><td></td></tr></table><div style=\"font-size:15px;color:#7a6f8c;letter-spacing:0\">↑ 북쪽 · 한 칸 = 한 블록</div>"}], "tip": "지도에서 위쪽이 북쪽이에요."}}, {"c": "🟡", "d": 6, "spec": {"type": "input", "title": "축척", "prompt": "지도 아래 메모예요.", "rounds": [{"q": "이 지도에서 <b>1cm</b>는 실제로 <b>500m</b>예요.<br>지도에서 <b>4cm</b>는 실제로 몇 m일까요?", "ans": ["2000"], "unit": "m", "h": "500 × 4", "text": false}], "tip": "1cm가 500m이면 4cm는 500m가 4번!"}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 2개를 모으면 🚪 문을 열 수 있어요!", "code": [3, 6], "order": ["🔴", "🟡"], "showOrder": true, "lockQ": "자물쇠에 그려진 <b>색깔 순서</b>대로 숫자 열쇠를 눌러요.", "hello": "🏛️ 시청에 들어왔어요. 물건을 눌러서 살펴봐요 👆", "tip": "물건 옆에 ❔ 가 있으면 문제가 숨어 있어요. 문제를 다 풀면 문을 눌러요."}, {"type": "room", "title": "고장 박물관", "icon": "🏺", "bg": "linear-gradient(#fbecd9,#fff7ee 58%,#d9c3a5 58%)", "objects": [{"e": "🏺", "x": 18, "y": 70, "s": 56, "p": 0}, {"e": "🛞", "x": 48, "y": 30, "s": 54, "p": 1}, {"e": "🏯", "x": 76, "y": 28, "s": 66, "m": "옛날 기와집 모형이에요."}, {"e": "🕯️", "x": 30, "y": 30, "s": 50, "m": "옛날에는 이런 불빛으로 밤을 밝혔대요."}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔵", "d": 9, "spec": {"type": "sort", "title": "옛날과 오늘날", "prompt": "옛날 도구와 오늘날 도구를 나눠요.", "bins": ["🏯<small>옛날</small>", "🏙️<small>오늘날</small>"], "items": [["맷돌", 0], ["호롱불", 0], ["믹서기", 1], ["전등", 1]], "tip": "전기를 쓰는지 생각해 보면 쉬워요."}}, {"c": "🔴", "d": 4, "spec": {"type": "order", "title": "통신 수단의 변화", "prompt": "옛날부터 오늘날까지 차례대로 놓아요.", "items": ["봉수(봉화)", "전화기", "스마트폰"], "label": "옛날 → 오늘날"}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 2개를 모으면 🚪 문을 열 수 있어요!", "code": [9, 4], "order": ["🔵", "🔴"], "showOrder": true, "lockQ": "자물쇠에 그려진 <b>색깔 순서</b>대로 숫자 열쇠를 눌러요.", "hello": "🏺 고장 박물관에 들어왔어요. 물건을 눌러서 살펴봐요 👆", "tip": "물건 옆에 ❔ 가 있으면 문제가 숨어 있어요. 문제를 다 풀면 문을 눌러요."}, {"type": "room", "title": "전통 시장", "icon": "🧺", "bg": "linear-gradient(#ffe6e1,#fff4f1 58%,#e2cdb6 58%)", "objects": [{"e": "🍡", "x": 18, "y": 70, "s": 56, "p": 0}, {"e": "🧾", "x": 48, "y": 30, "s": 50, "p": 1}, {"e": "🏮", "x": 74, "y": 24, "s": 56, "m": "시장 입구에 등불이 걸려 있어요."}, {"e": "🧺", "x": 30, "y": 32, "s": 56, "m": "바구니에 채소가 가득해요."}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🟡", "d": 1, "spec": {"type": "coins", "title": "과일 가게", "prompt": "돈을 눌러서 값만큼 내요.", "coins": [100, 500, 1000, 5000], "showSum": true, "tip": "큰 돈부터 놓으면 쉬워요.", "rounds": [{"e": "🍎", "name": "사과 한 봉지", "price": 7500}, {"e": "🍇", "name": "포도", "price": 12300}]}}, {"c": "🔵", "d": 8, "spec": {"type": "input", "title": "시장 계산", "prompt": "시장 장부를 보고 계산해요.", "rounds": [{"q": "귤 한 상자에 <b>12,500원</b>이에요. <b>4상자</b>를 사면 얼마일까요?", "ans": ["50000"], "unit": "원", "h": "12,500 × 4", "text": false}]}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 2개를 모으면 🚪 문을 열 수 있어요!", "code": [1, 8], "order": ["🟡", "🔵"], "showOrder": true, "lockQ": "자물쇠에 그려진 <b>색깔 순서</b>대로 숫자 열쇠를 눌러요.", "hello": "🧺 전통 시장에 들어왔어요. 물건을 눌러서 살펴봐요 👆", "tip": "물건 옆에 ❔ 가 있으면 문제가 숨어 있어요. 문제를 다 풀면 문을 눌러요."}], "story": "고장 지도 뒤에 \"보물 상자의 열쇠는 시청, 박물관, 시장에 숨겨 두었다\"라는 쪽지가 있어요! 🗺️ 탐험대가 되어 문제를 풀고 <b>숫자 열쇠</b>를 모아요.", "endTitle": "고장 탐험 완료!", "endText": "보물 상자 안에는 \"우리 고장 탐험 대장\" 메달이 들어 있었어요! 🏅"}, "normal": {"stages": [{"type": "room", "title": "시청", "icon": "🏛️", "bg": "linear-gradient(#e8ecff,#f6f7ff 58%,#d9d2c4 58%)", "objects": [{"e": "🗺️", "x": 18, "y": 30, "s": 56, "p": 0}, {"e": "🧭", "x": 48, "y": 72, "s": 52, "p": 1}, {"e": "📋", "x": 80, "y": 70, "s": 54, "p": 2}, {"e": "🏛️", "x": 74, "y": 28, "s": 70, "m": "시청에서는 고장 사람들을 위한 일을 해요."}, {"e": "🪴", "x": 28, "y": 72, "s": 52, "m": "화분에 물이 촉촉해요."}, {"e": "🖼️", "x": 48, "y": 24, "s": 50, "m": "🖼️ 쪽지가 붙어 있어요: <b style=\"font-size:26px\">🔵 → 🔴 → 🟡</b> 순서로 숫자를 눌러요!"}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔴", "d": 7, "spec": {"type": "quiz", "title": "지도 읽기", "prompt": "시청 벽에 고장 지도가 붙어 있어요.", "rounds": [{"q": "🏫 학교에서 북쪽으로 3칸, 동쪽으로 2칸 가면?", "ans": "📚 도서관", "options": ["📚 도서관", "🏛️ 시청", "⛲ 분수대"], "pic": "<table class=\"mapg\"><tr><td>🏥</td><td></td><td>📚</td><td>🌳</td></tr><tr><td></td><td>🏛️</td><td></td><td></td></tr><tr><td>🚒</td><td></td><td></td><td>⛲</td></tr><tr><td>🏫</td><td></td><td>🏪</td><td></td></tr></table><div style=\"font-size:15px;color:#7a6f8c;letter-spacing:0\">↑ 북쪽 · 한 칸 = 한 블록</div>"}]}}, {"c": "🟡", "d": 1, "spec": {"type": "input", "title": "축척", "prompt": "지도 아래 메모예요.", "rounds": [{"q": "축척이 <b>1:10,000</b>인 지도에서 <b>1cm</b>는 실제로 몇 m일까요?", "ans": ["100"], "unit": "m", "h": "1cm × 10,000 = 10,000cm = 100m", "text": false}]}}, {"c": "🔵", "d": 4, "spec": {"type": "sort", "title": "공공 기관", "prompt": "공공 기관을 하는 일에 맞게 나눠요.", "bins": ["🚒<small>불·구조</small>", "🚓<small>안전·질서</small>", "🏥<small>건강</small>"], "items": [["🚒<small>소방서</small>", 0], ["🚑<small>119 구급대</small>", 0], ["🚓<small>경찰서</small>", 1], ["👮<small>지구대</small>", 1], ["🏥<small>보건소</small>", 2], ["💉<small>예방 접종</small>", 2]]}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 3개를 모으면 🚪 문을 열 수 있어요!", "code": [4, 7, 1], "order": ["🔵", "🔴", "🟡"], "showOrder": false, "lockQ": "쪽지에 적힌 <b>색깔 순서</b>대로 숫자를 눌러요. (쪽지는 방 안 어딘가에 있어요!)", "hello": "🏛️ 시청에 들어왔어요. 물건을 눌러서 살펴봐요 👆"}, {"type": "room", "title": "고장 박물관", "icon": "🏺", "bg": "linear-gradient(#fbecd9,#fff7ee 58%,#d9c3a5 58%)", "objects": [{"e": "🏺", "x": 18, "y": 70, "s": 56, "p": 0}, {"e": "🛞", "x": 48, "y": 30, "s": 54, "p": 1}, {"e": "🗃️", "x": 80, "y": 70, "s": 54, "p": 2}, {"e": "🏯", "x": 76, "y": 28, "s": 66, "m": "옛날 기와집 모형이에요."}, {"e": "🕯️", "x": 30, "y": 30, "s": 50, "m": "옛날에는 이런 불빛으로 밤을 밝혔대요."}, {"e": "📜", "x": 48, "y": 72, "s": 48, "m": "📜 쪽지가 붙어 있어요: <b style=\"font-size:26px\">🟡 → 🔵 → 🔴</b> 순서로 숫자를 눌러요!"}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔴", "d": 2, "spec": {"type": "sort", "title": "옛날과 오늘날", "prompt": "옛날 도구와 오늘날 도구를 나눠요.", "bins": ["🏯<small>옛날</small>", "🏙️<small>오늘날</small>"], "items": [["맷돌", 0], ["호롱불", 0], ["다듬이", 0], ["믹서기", 1], ["전등", 1], ["다리미", 1]], "tip": "전기를 쓰는지 생각해 보면 쉬워요."}}, {"c": "🟡", "d": 9, "spec": {"type": "order", "title": "통신 수단의 변화", "prompt": "옛날부터 오늘날까지 차례대로 놓아요.", "items": ["봉수(봉화)", "파발", "전보", "스마트폰"], "label": "옛날 → 오늘날"}}, {"c": "🔵", "d": 5, "spec": {"type": "memory", "title": "짝 도구 찾기", "prompt": "옛날 도구와 같은 일을 하는 오늘날 도구를 짝지어요. 카드 두 장을 뒤집어요.", "pairs": [["맷돌", "믹서기"], ["호롱불", "전등"], ["다듬이", "다리미"], ["짚신", "운동화"], ["지게", "손수레"], ["화로", "난로"]], "cols": 4, "peek": 2000, "peeks": 1}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 3개를 모으면 🚪 문을 열 수 있어요!", "code": [9, 5, 2], "order": ["🟡", "🔵", "🔴"], "showOrder": false, "lockQ": "쪽지에 적힌 <b>색깔 순서</b>대로 숫자를 눌러요. (쪽지는 방 안 어딘가에 있어요!)", "hello": "🏺 고장 박물관에 들어왔어요. 물건을 눌러서 살펴봐요 👆"}, {"type": "room", "title": "전통 시장", "icon": "🧺", "bg": "linear-gradient(#ffe6e1,#fff4f1 58%,#e2cdb6 58%)", "objects": [{"e": "🍡", "x": 18, "y": 70, "s": 56, "p": 0}, {"e": "🧾", "x": 48, "y": 30, "s": 50, "p": 1}, {"e": "🧑‍🌾", "x": 80, "y": 66, "s": 58, "p": 2}, {"e": "🏮", "x": 74, "y": 24, "s": 56, "m": "시장 입구에 등불이 걸려 있어요."}, {"e": "🧺", "x": 30, "y": 32, "s": 56, "m": "바구니에 채소가 가득해요."}, {"e": "🪧", "x": 48, "y": 72, "s": 48, "m": "🪧 쪽지가 붙어 있어요: <b style=\"font-size:26px\">🔴 → 🔵 → 🟡</b> 순서로 숫자를 눌러요!"}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔴", "d": 6, "spec": {"type": "coins", "title": "과일 가게", "prompt": "손님에게 거스름돈을 줘요.", "coins": [10, 50, 100, 500, 1000, 5000], "showSum": true, "rounds": [{"e": "🍉", "name": "수박", "price": 13800, "pay": 20000}, {"e": "🍑", "name": "복숭아 상자", "price": 8650, "pay": 10000}]}}, {"c": "🟡", "d": 3, "spec": {"type": "input", "title": "시장 계산", "prompt": "시장 장부를 보고 계산해요.", "rounds": [{"q": "귤 한 상자에 <b>12,500원</b>이에요. <b>24상자</b>를 사면 얼마일까요?", "ans": ["300000"], "unit": "원", "h": "12,500 × 24 = 12,500 × 20 + 12,500 × 4", "text": false}]}}, {"c": "🔵", "d": 8, "spec": {"type": "quiz", "title": "경제 퀴즈", "prompt": "시장 상인 아저씨의 퀴즈예요.", "rounds": [{"q": "물건을 만들거나 서비스를 제공하는 일을 무엇이라고 할까요?", "ans": "생산", "options": ["생산", "소비", "저축"], "pic": "🏭"}]}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 3개를 모으면 🚪 문을 열 수 있어요!", "code": [6, 8, 3], "order": ["🔴", "🔵", "🟡"], "showOrder": false, "lockQ": "쪽지에 적힌 <b>색깔 순서</b>대로 숫자를 눌러요. (쪽지는 방 안 어딘가에 있어요!)", "hello": "🧺 전통 시장에 들어왔어요. 물건을 눌러서 살펴봐요 👆"}], "story": "고장 지도 뒤에 \"보물 상자의 열쇠는 시청, 박물관, 시장에 숨겨 두었다\"라는 쪽지가 있어요! 🗺️ 탐험대가 되어 문제를 풀고 <b>숫자 열쇠</b>를 모아요.", "endTitle": "고장 탐험 완료!", "endText": "보물 상자 안에는 \"우리 고장 탐험 대장\" 메달이 들어 있었어요! 🏅"}, "hard": {"stages": [{"type": "room", "title": "시청", "icon": "🏛️", "bg": "linear-gradient(#e8ecff,#f6f7ff 58%,#d9d2c4 58%)", "objects": [{"e": "🗺️", "x": 18, "y": 30, "s": 56, "p": 0}, {"e": "🧭", "x": 48, "y": 72, "s": 52, "p": 1}, {"e": "📋", "x": 80, "y": 70, "s": 54, "p": 2}, {"e": "🏛️", "x": 74, "y": 28, "s": 70, "m": "시청에서는 고장 사람들을 위한 일을 해요."}, {"e": "🪴", "x": 28, "y": 72, "s": 52, "m": "화분에 물이 촉촉해요."}, {"e": "🚦", "x": 48, "y": 24, "s": 50, "m": "🚦 신호등 모양 쪽지: \"내 불빛이 <b>위에서부터</b> 켜진 순서대로 누르면 문이 열려!\""}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔴", "d": 7, "spec": {"type": "quiz", "title": "지도 읽기", "prompt": "시청 벽에 고장 지도가 붙어 있어요.", "rounds": [{"q": "🏪 가게에서 북쪽으로 2칸 → 동쪽으로 1칸 → 서쪽으로 2칸 가면?", "ans": "🏛️ 시청", "options": ["🏛️ 시청", "📚 도서관", "🌳 공원"], "pic": "<table class=\"mapg\"><tr><td>🏥</td><td></td><td>📚</td><td>🌳</td></tr><tr><td></td><td>🏛️</td><td></td><td></td></tr><tr><td>🚒</td><td></td><td></td><td>⛲</td></tr><tr><td>🏫</td><td></td><td>🏪</td><td></td></tr></table><div style=\"font-size:15px;color:#7a6f8c;letter-spacing:0\">↑ 북쪽 · 한 칸 = 한 블록</div>"}]}}, {"c": "🟡", "d": 1, "spec": {"type": "input", "title": "축척", "prompt": "지도 아래 메모예요.", "rounds": [{"q": "축척이 <b>1:50,000</b>인 지도에서 <b>6cm</b>는 실제로 몇 km일까요?", "ans": ["3"], "unit": "km", "h": "6cm × 50,000 = 300,000cm = 3,000m", "text": false}]}}, {"c": "🟢", "d": 4, "spec": {"type": "sort", "title": "공공 기관", "prompt": "공공 기관과 하는 일을 알맞게 나눠요.", "bins": ["🚒<small>불·구조</small>", "🚓<small>안전·질서</small>", "🏥<small>건강</small>", "🏢<small>주민 생활 돕기</small>"], "items": [["🚒<small>소방서</small>", 0], ["🚑<small>119 구급대</small>", 0], ["🚓<small>경찰서</small>", 1], ["👮<small>지구대</small>", 1], ["🏥<small>보건소</small>", 2], ["💉<small>예방 접종</small>", 2], ["🏢<small>행정복지센터</small>", 3], ["📄<small>주민 등록 서류</small>", 3]]}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 3개를 모으면 🚪 문을 열 수 있어요!", "code": [7, 1, 4], "order": ["🔴", "🟡", "🟢"], "showOrder": false, "lockQ": "방 안의 힌트를 찾아서 숫자 열쇠를 누를 순서를 알아내요.", "hello": "🏛️ 시청에 들어왔어요. 물건을 눌러서 살펴봐요 👆"}, {"type": "room", "title": "고장 박물관", "icon": "🏺", "bg": "linear-gradient(#fbecd9,#fff7ee 58%,#d9c3a5 58%)", "objects": [{"e": "🏺", "x": 18, "y": 70, "s": 56, "p": 0}, {"e": "🛞", "x": 48, "y": 30, "s": 54, "p": 1}, {"e": "🗃️", "x": 80, "y": 70, "s": 54, "p": 2}, {"e": "🏯", "x": 76, "y": 28, "s": 66, "m": "옛날 기와집 모형이에요."}, {"e": "🕯️", "x": 30, "y": 30, "s": 50, "m": "옛날에는 이런 불빛으로 밤을 밝혔대요."}, {"e": "📜", "x": 48, "y": 72, "s": 48, "m": "📜 쪽지: \"숫자가 <b>큰 것부터</b> 차례대로!\""}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔴", "d": 2, "spec": {"type": "sort", "title": "옛날과 오늘날", "prompt": "옛날 도구와 오늘날 도구를 나눠요.", "bins": ["🏯<small>옛날</small>", "🏙️<small>오늘날</small>"], "items": [["맷돌", 0], ["호롱불", 0], ["다듬이", 0], ["짚신", 0], ["지게", 0], ["믹서기", 1], ["전등", 1], ["다리미", 1], ["운동화", 1], ["손수레", 1]], "tip": "전기를 쓰는지 생각해 보면 쉬워요."}}, {"c": "🟡", "d": 9, "spec": {"type": "order", "title": "통신 수단의 변화", "prompt": "옛날부터 오늘날까지 차례대로 놓아요.", "items": ["봉수(봉화)", "파발", "전보", "유선 전화", "인터넷 영상 통화"], "label": "옛날 → 오늘날"}}, {"c": "🔵", "d": 5, "spec": {"type": "memory", "title": "짝 도구 찾기", "prompt": "옛날 도구와 같은 일을 하는 오늘날 도구를 짝지어요. 카드 두 장을 뒤집어요.", "pairs": [["맷돌", "믹서기"], ["호롱불", "전등"], ["다듬이", "다리미"], ["짚신", "운동화"], ["지게", "손수레"], ["화로", "난로"], ["우물", "수도"], ["가마", "자동차"]], "cols": 4, "peek": 0, "peeks": 0}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 3개를 모으면 🚪 문을 열 수 있어요!", "code": [9, 5, 2], "order": ["🟡", "🔵", "🔴"], "showOrder": false, "lockQ": "방 안의 힌트를 찾아서 숫자 열쇠를 누를 순서를 알아내요.", "hello": "🏺 고장 박물관에 들어왔어요. 물건을 눌러서 살펴봐요 👆"}, {"type": "room", "title": "전통 시장", "icon": "🧺", "bg": "linear-gradient(#ffe6e1,#fff4f1 58%,#e2cdb6 58%)", "objects": [{"e": "🍡", "x": 18, "y": 70, "s": 56, "p": 0}, {"e": "🧾", "x": 48, "y": 30, "s": 50, "p": 1}, {"e": "🧑‍🌾", "x": 80, "y": 66, "s": 58, "p": 2}, {"e": "🏮", "x": 74, "y": 24, "s": 56, "m": "시장 입구에 등불이 걸려 있어요."}, {"e": "🧺", "x": 30, "y": 32, "s": 56, "m": "바구니에 채소가 가득해요."}, {"e": "🪧", "x": 48, "y": 72, "s": 48, "m": "🪧 쪽지 뒷면에 무지개 🌈 가 그려져 있어요: \"<b>무지개 색깔 순서</b>대로 누르세요.\""}, {"e": "🚪", "x": 92, "y": 56, "s": 70, "door": 1}], "puzzles": [{"c": "🔵", "d": 8, "spec": {"type": "coins", "title": "과일 가게", "prompt": "손님에게 거스름돈을 줘요. (낸 돈은 보여 주지 않아요!)", "coins": [10, 50, 100, 500, 1000, 5000], "showSum": false, "rounds": [{"e": "🍉", "name": "수박", "price": 16450, "pay": 30000}, {"e": "🍑", "name": "복숭아 상자", "price": 23780, "pay": 50000}]}}, {"c": "🟢", "d": 3, "spec": {"type": "input", "title": "시장 계산", "prompt": "시장 장부를 보고 계산해요.", "rounds": [{"q": "오늘 시장에서 사과를 <b>7,560개</b> 팔았어요. 한 상자에 <b>36개</b>씩 담아 팔았다면, 몇 상자일까요?", "ans": ["210"], "unit": "상자", "h": "7,560 ÷ 36", "text": false}]}}, {"c": "🔴", "d": 6, "spec": {"type": "quiz", "title": "경제 퀴즈", "prompt": "시장 상인 아저씨의 퀴즈예요.", "rounds": [{"q": "돈을 내고 필요한 물건을 사서 쓰는 일은?", "ans": "소비", "options": ["소비", "생산", "수출"], "pic": "🛍️"}]}}], "prompt": "<b>❔</b> 표시가 있는 물건을 눌러 문제를 풀어요. 숫자 열쇠 3개를 모으면 🚪 문을 열 수 있어요!", "code": [6, 3, 8], "order": ["🔴", "🟢", "🔵"], "showOrder": false, "lockQ": "방 안의 힌트를 찾아서 숫자 열쇠를 누를 순서를 알아내요.", "hello": "🧺 전통 시장에 들어왔어요. 물건을 눌러서 살펴봐요 👆"}], "story": "고장 지도 뒤에 \"보물 상자의 열쇠는 시청, 박물관, 시장에 숨겨 두었다\"라는 쪽지가 있어요! 🗺️ 탐험대가 되어 문제를 풀고 <b>숫자 열쇠</b>를 모아요.", "endTitle": "고장 탐험 완료!", "endText": "보물 상자 안에는 \"우리 고장 탐험 대장\" 메달이 들어 있었어요! 🏅"}};
+</script>
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const LVN={easy:'🟢 쉬움',normal:'🟡 보통',hard:'🔴 어려움'};
+let LV=new URLSearchParams(location.search).get('lv');
+if(!LVN[LV]){try{LV=localStorage.getItem('class-level')}catch(e){}}
+if(!LVN[LV])LV='normal';
+const D=DATA[LV];
+const SKEY=LV==='normal'?KEY:KEY+'-'+LV;
+const HINT_AT={easy:1,normal:3,hard:1e9}[LV];
+const COL={'🔴':'#ff6b6b','🟡':'#f7c948','🔵':'#4d96ff','🟢':'#4cc35d','🟣':'#b26bff'};
+function fresh(){return{i:0,stars:[],end:0}}
+function load(){try{const s=JSON.parse(localStorage.getItem(SKEY));if(s&&typeof s.i==='number'&&s.i<=D.stages.length)return s}catch(e){}return fresh()}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(S))}catch(e){}}
+let S=load();
+$('#pill').textContent=GRADE+'학년 · '+LVN[LV];
+/* 소리 */
+let MUTE=false;try{MUTE=localStorage.getItem('kid-mute')==='1'}catch(e){}
+const muteBtn=$('#mute');const setMute=()=>muteBtn.textContent=MUTE?'🔕':'🔔';setMute();
+muteBtn.onclick=()=>{MUTE=!MUTE;setMute();try{localStorage.setItem('kid-mute',MUTE?'1':'0')}catch(e){}};
+let AC=null;
+function beep(f,d,type,vol){if(MUTE)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(vol||.14,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d)}catch(e){}}
+const good=()=>{beep(660,.12);setTimeout(()=>beep(990,.16),100)};
+const bad=()=>beep(170,.22,'square',.06);
+const fanfare=()=>[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.22),i*120));
+function speak(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(t).replace(/<[^>]+>/g,' ').replace(/[\u{1F000}-\u{1FAFF}☀-➿⬀-⯿️‍]/gu,' ').replace(/×/g,' 곱하기 ').replace(/\+/g,' 더하기 ').replace(/ - /g,' 빼기 '));u.lang='ko-KR';u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+/* 도구 */
+function h(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+function shake(e){if(!e)return;e.classList.remove('shake');void e.offsetWidth;e.classList.add('shake')}
+function glow(e){if(!e)return;e.classList.remove('hint');void e.offsetWidth;e.classList.add('hint');setTimeout(()=>e.classList.remove('hint'),2400)}
+function confetti(){const em=['🎉','⭐','🎈','✨','🌟','🍬'];for(let i=0;i<26;i++){const c=h('div','conf',em[i%em.length]);c.style.left=Math.random()*100+'vw';c.style.animationDelay=Math.random()*.6+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3200)}}
+const strip=s=>String(s).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+/* 겹창 */
+const ov=$('#ov'),ovin=$('#ovin');
+function openOv(node,noClose){ovin.innerHTML='';ovin.appendChild(node);$('#ovx').style.display=noClose?'none':'';ov.classList.remove('hide')}
+function closeOv(){ov.classList.add('hide');ovin.innerHTML=''}
+$('#ovx').onclick=closeOv;
+function popup(html,btn,fn){const b=h('div','',html);const x=h('button','btn go',btn);x.onclick=()=>{closeOv();fn()};b.appendChild(x);openOv(b,true);setTimeout(()=>x.focus(),50)}
+/* 끌어 놓기 + 눌러서 옮기기 */
+function dnd(root,onDrop,onTap){
+  let sel=null;
+  root.addEventListener('pointerdown',e=>{
+    const t=e.target.closest('.tok');if(!t||t.classList.contains('used')||!root.contains(t))return;
+    e.preventDefault();const sx=e.clientX,sy=e.clientY;let gh=null;
+    const mv=ev=>{if(!gh&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>10){gh=t.cloneNode(true);gh.classList.add('dragghost');gh.classList.remove('sel');gh.style.width=t.offsetWidth+'px';document.body.appendChild(gh);t.classList.add('lift')}
+      if(gh){gh.style.left=ev.clientX+'px';gh.style.top=ev.clientY+'px'}};
+    const up=ev=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);
+      if(gh){gh.remove();t.classList.remove('lift');const u=document.elementFromPoint(ev.clientX,ev.clientY);const bin=u&&u.closest('.bin');if(bin&&root.contains(bin)){if(sel){sel.classList.remove('sel');sel=null}onDrop(t,bin)}}
+      else if(onTap){onTap(t)}
+      else{if(sel===t){t.classList.remove('sel');sel=null}else{if(sel)sel.classList.remove('sel');sel=t;t.classList.add('sel')}}};
+    window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);
+  });
+  root.addEventListener('click',e=>{const bin=e.target.closest('.bin');if(bin&&sel&&root.contains(bin)){const t=sel;sel.classList.remove('sel');sel=null;onDrop(t,bin)}});
+}
+/* 시계 */
+function mkClock(){
+  let s='<svg viewBox="0 0 200 200" class="clk"><circle cx="100" cy="100" r="95" class="face"/>';
+  for(let i=0;i<60;i++){const a=i*Math.PI/30,r1=i%5?87:82;s+=`<line x1="${(100+r1*Math.sin(a)).toFixed(1)}" y1="${(100-r1*Math.cos(a)).toFixed(1)}" x2="${(100+92*Math.sin(a)).toFixed(1)}" y2="${(100-92*Math.cos(a)).toFixed(1)}" class="${i%5?'tk':'tk5'}"/>`}
+  for(let i=1;i<=12;i++){const a=i*Math.PI/6;s+=`<text x="${(100+68*Math.sin(a)).toFixed(1)}" y="${(100-68*Math.cos(a)+7).toFixed(1)}" class="num">${i}</text>`}
+  s+='<line class="hh" x1="100" y1="100" x2="100" y2="54"/><line class="mh" x1="100" y1="100" x2="100" y2="24"/><circle cx="100" cy="100" r="7" class="pin"/></svg>';
+  return h('div','clkw',s);
+}
+function setClock(w,t){t=((t%720)+720)%720;w.querySelector('.hh').setAttribute('transform',`rotate(${t/2} 100 100)`);w.querySelector('.mh').setAttribute('transform',`rotate(${(t%60)*6} 100 100)`)}
+const fmt=t=>{t=((t%720)+720)%720;const hh=Math.floor(t/60)||12,mm=t%60;return hh+'시'+(mm?' '+mm+'분':'')};
+/* ───── 놀이 종류 ───── */
+const RUN={};
+let CURQ='';
+RUN.quiz=(sp,el,done,cx)=>{
+  let k=0;
+  const next=()=>{
+    if(k>=sp.rounds.length)return done();
+    const r=sp.rounds[k];el.innerHTML='';CURQ=r.q||'';
+    if(sp.rounds.length>1)el.appendChild(h('div','cnt',`${k+1} / ${sp.rounds.length}`));
+    if(r.q)el.appendChild(h('div','q',r.q));
+    if(r.pic)el.appendChild(h('div','pic',r.pic));
+    if(r.seq)el.appendChild(h('div','seq',r.seq.map(x=>x==='?'?'<span class="blank">?</span>':`<span>${x}</span>`).join('')));
+    if(r.clock){const w=mkClock();setClock(w,(r.clock[0]%12)*60+r.clock[1]);el.appendChild(w)}
+    const op=h('div','opts');
+    shuffle(r.options).forEach(o=>{const b=h('button','opt'+(strip(o).length>3?' long':''),String(o));b.dataset.v=String(o);
+      b.onclick=()=>{if(String(o)===String(r.ans)){good();b.classList.add('ok');const bl=el.querySelector('.blank');if(bl){bl.textContent=o;bl.classList.add('filled')}op.style.pointerEvents='none';setTimeout(()=>{k++;next()},750)}
+        else{bad();shake(b);b.disabled=true;if(cx.miss())glow(op.querySelector(`[data-v="${CSS.escape(String(r.ans))}"]`))}};op.appendChild(b)});
+    el.appendChild(op);
+  };next();
+};
+RUN.input=(sp,el,done,cx)=>{
+  let k=0;
+  const norm=v=>String(v).replace(/[\s,]/g,'').replace(/^\./,'0.').toLowerCase();
+  const next=()=>{
+    if(k>=sp.rounds.length)return done();
+    const r=sp.rounds[k];el.innerHTML='';CURQ=r.q||'';
+    if(sp.rounds.length>1)el.appendChild(h('div','cnt',`${k+1} / ${sp.rounds.length}`));
+    if(r.pic)el.appendChild(h('div','pic',r.pic));
+    if(r.q)el.appendChild(h('div','q',r.q));
+    const row=h('div','inrow');const inp=h('input','inbox');inp.type='text';inp.inputMode=r.text?'text':'decimal';inp.autocomplete='off';inp.placeholder=r.ph||(r.text?'답을 써요':'숫자');
+    const un=h('span','unit',r.unit||'');const ok=h('button','btn go','확인 ✔');const msg=h('div','msg');
+    row.append(inp,un);el.append(row,ok,msg);setTimeout(()=>inp.focus(),80);
+    const check=()=>{const v=norm(inp.value);if(!v)return;
+      if(r.ans.map(norm).includes(v)){good();inp.classList.add('ok');ok.disabled=true;msg.textContent='';setTimeout(()=>{k++;next()},700)}
+      else{bad();shake(row);const hn=cx.miss();msg.innerHTML='다시 생각해 봐요!'+(hn&&r.h?`<br>💡 ${r.h}`:'');inp.select()}};
+    ok.onclick=check;inp.addEventListener('keydown',e=>{if(e.key==='Enter')check()});
+  };next();
+};
+RUN.pattern=RUN.quiz;
+RUN.sort=(sp,el,done,cx)=>{
+  const pool=h('div','pool'),bins=h('div','bins');
+  sp.bins.forEach((b,i)=>{const d=h('div','bin',`<div class="bh">${b}</div><div class="got"></div>`);d.dataset.b=i;bins.appendChild(d)});
+  let left=sp.items.length;
+  shuffle(sp.items).forEach(it=>{const t=h('div','tok'+(/^[^\u{1F000}-\u{1FAFF}☀-➿]/u.test(it[0])?' txt':''),it[0]);t.dataset.b=it[1];pool.appendChild(t)});
+  el.append(pool,bins);
+  dnd(el,(t,bin)=>{if(t.dataset.b===bin.dataset.b){good();bin.querySelector('.got').appendChild(t);t.classList.add('used');if(--left===0)setTimeout(done,600)}
+    else{bad();shake(t);shake(bin);if(cx.miss())glow(bins.children[+t.dataset.b])}});
+};
+RUN.memory=(sp,el,done,cx)=>{
+  const cards=[];sp.pairs.forEach((p,i)=>{cards.push([p[0],i]);cards.push([p[1],i])});
+  const g=h('div','mem');g.style.gridTemplateColumns=`repeat(${sp.cols},1fr)`;
+  let open=[],lock=false,left=sp.pairs.length,mism=0,peeks=sp.peeks||0;
+  shuffle(cards).forEach(([t,i])=>{const c=h('button','mc',`<span class="f">${t}</span><span class="b">❓</span>`);c.dataset.p=i;
+    c.onclick=()=>{if(lock||c.classList.contains('up'))return;c.classList.add('up');open.push(c);
+      if(open.length===2){lock=true;const[a,b]=open;
+        if(a.dataset.p===b.dataset.p){good();a.classList.add('ok');b.classList.add('ok');open=[];lock=false;if(--left===0)setTimeout(done,700)}
+        else{beep(300,.12,'triangle',.08);mism++;if(mism>sp.pairs.length)cx.miss();setTimeout(()=>{a.classList.remove('up');b.classList.remove('up');open=[];lock=false},950)}}};
+    g.appendChild(c)});
+  el.appendChild(g);
+  const show=ms=>{lock=true;g.querySelectorAll('.mc:not(.ok)').forEach(c=>c.classList.add('up'));setTimeout(()=>{g.querySelectorAll('.mc:not(.ok)').forEach(c=>c.classList.remove('up'));open=[];lock=false},ms)};
+  if(sp.peek)show(sp.peek);
+  if(peeks){const pb=h('button','btn ghost peek',`👀 살짝 보기 (${peeks}번)`);pb.onclick=()=>{if(lock||!peeks)return;peeks--;pb.textContent=`👀 살짝 보기 (${peeks}번)`;if(!peeks)pb.disabled=true;show(1500)};el.appendChild(pb)}
+};
+RUN.order=(sp,el,done,cx)=>{
+  let k=0;const n=sp.items.length;
+  let sh=shuffle(sp.items);for(let z=0;z<9&&sh.every((x,i)=>x===sp.items[i]);z++)sh=shuffle(sp.items);
+  const pool=h('div','pool'),slots=h('div','slots');
+  for(let i=0;i<n;i++)slots.appendChild(h('div','bin slot',`<b>${i+1}</b>`));
+  sh.forEach(x=>{const t=h('div','tok'+(/^[^\u{1F000}-\u{1FAFF}☀-➿]/u.test(x)?' txt':''),x);t.dataset.v=x;pool.appendChild(t)});
+  el.append(pool,h('div','arrowlbl',sp.label||'1번부터 차례대로'),slots);
+  const put=t=>{if(t.dataset.v===sp.items[k]){good();t.classList.remove('sel');const s=slots.children[k];s.innerHTML='';s.appendChild(t);t.classList.add('used');s.classList.add('fill');k++;if(k===n)setTimeout(done,600)}
+    else{bad();shake(t);if(cx.miss())glow([...pool.children].find(x=>x.dataset.v===sp.items[k]))}};
+  dnd(el,t=>put(t),put);
+};
+RUN.clock=(sp,el,done,cx)=>{
+  let k=0;
+  const next=()=>{
+    if(k>=sp.rounds.length)return done();
+    const r=sp.rounds[k];el.innerHTML='';const target=(r.h%12)*60+r.m;CURQ=r.say||'';
+    if(sp.rounds.length>1)el.appendChild(h('div','cnt',`${k+1} / ${sp.rounds.length}`));
+    if(r.say)el.appendChild(h('div','q',r.say));
+    const w=mkClock();el.appendChild(w);
+    if(r.mode==='read'){
+      setClock(w,target);
+      const op=h('div','opts');
+      shuffle(r.options).forEach(o=>{const b=h('button','opt long',o);b.dataset.v=o;b.onclick=()=>{if(o===r.ans){good();b.classList.add('ok');op.style.pointerEvents='none';setTimeout(()=>{k++;next()},750)}else{bad();shake(b);b.disabled=true;if(cx.miss())glow(op.querySelector(`[data-v="${CSS.escape(r.ans)}"]`))}};op.appendChild(b)});
+      el.appendChild(op);return;
+    }
+    const step=sp.step;let t=r.start||0,raw=t;
+    const svg=w.querySelector('svg');svg.classList.add('set');
+    const dig=h('div','dig'),msg=h('div','msg');
+    const upd=()=>{setClock(w,t);dig.textContent=sp.digital?'지금: '+fmt(t):''};
+    const ang=e=>{const b=svg.getBoundingClientRect();let a=Math.atan2(e.clientX-b.left-b.width/2,-(e.clientY-b.top-b.height/2))*180/Math.PI;return a<0?a+360:a};
+    let drag=false,lastA=0;
+    svg.addEventListener('pointerdown',e=>{drag=true;lastA=ang(e);raw=t;try{svg.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
+    svg.addEventListener('pointermove',e=>{if(!drag)return;const a=ang(e);let da=a-lastA;if(da>180)da-=360;if(da<-180)da+=360;lastA=a;raw+=da/6;t=((Math.round(raw/step)*step)%720+720)%720;upd()});
+    const stop=()=>{drag=false;raw=t};svg.addEventListener('pointerup',stop);svg.addEventListener('pointercancel',stop);
+    const bt=h('div','cbtns');
+    [['◀ 1시간',-60,'hb'],[`◀ ${step}분`,-step,'mb'],[`${step}분 ▶`,step,'mb'],['1시간 ▶',60,'hb']].forEach(([l,d,c])=>{const b=h('button',c,l);b.dataset.d=d;b.onclick=()=>{t=((t+d)%720+720)%720;raw=t;upd()};bt.appendChild(b)});
+    const ok=h('button','btn go','다 맞췄어요 ✔');
+    ok.onclick=()=>{if(t===target){good();msg.textContent='';ok.disabled=true;setTimeout(()=>{k++;next()},700)}else{bad();shake(w);const hn=cx.miss();msg.innerHTML=(LV==='hard'?'다시 한번 살펴봐요!':'아직 아니에요. <b>짧은바늘</b>(시)과 <b>긴바늘</b>(분)을 다시 봐요.')+(hn?`<br>지금 시계는 <b>${fmt(t)}</b>이에요.`:'')}};
+    el.append(h('div','legend','<b class="h">빨간 짧은바늘</b> = 시 · <b class="m">파란 긴바늘</b> = 분 · 시계를 돌리거나 버튼을 눌러요'),bt,dig,msg,ok);
+    upd();
+  };next();
+};
+function coinEl(v,cls){return v>=1000?h('button','note n'+v+(cls?' '+cls:''),`💵 ${v.toLocaleString()}<small>원</small>`):h('button','coin c'+v+(cls?' '+cls:''),`${v}<small>원</small>`)}
+RUN.coins=(sp,el,done,cx)=>{
+  let k=0;
+  const next=()=>{
+    if(k>=sp.rounds.length)return done();
+    const r=sp.rounds[k];el.innerHTML='';const need=r.pay?r.pay-r.price:r.price;
+    if(sp.rounds.length>1)el.appendChild(h('div','cnt',`손님 ${k+1} / ${sp.rounds.length}`));
+    const shop=h('div','shop');
+    if(r.items){shop.innerHTML=`<div class="pic">${r.items.map(x=>x[0]).join(' ')}</div><div class="q">${r.items.map(x=>`${x[1]} <span class="price">${x[2].toLocaleString()}원</span>`).join(' + ')}</div><div>모두 얼마일까요? 돈을 내 봐요!</div>`;CURQ=r.items.map(x=>x[1]+' '+x[2]+'원').join(', ')+'. 모두 얼마일까요?'}
+    else if(r.pay){shop.innerHTML=`<div class="pic">${r.e}</div><div class="q">${r.name} <span class="price">${r.price.toLocaleString()}원</span></div><div>손님이 <span class="bill">💵 ${r.pay.toLocaleString()}원</span>을 냈어요. <b>거스름돈</b>을 주세요!</div>`;CURQ=`${r.name} ${r.price}원. 손님이 ${r.pay}원을 냈어요. 거스름돈을 주세요.`}
+    else{shop.innerHTML=`<div class="pic">${r.e}</div><div class="q">${r.name} <span class="price">${r.price.toLocaleString()}원</span></div>`;CURQ=`${r.name} ${r.price}원`}
+    const bank=h('div','bank'),tray=h('div','bin tray','<span class="empty">동전을 눌러서 여기에 놓아요</span>'),sum=h('div','sum'),msg=h('div','msg');
+    let total=0;
+    const upd=()=>{sum.textContent=sp.showSum?`놓은 돈: ${total.toLocaleString()}원`:'';const e=tray.querySelector('.empty');if(e)e.style.display=tray.querySelectorAll('.coin,.note').length?'none':''};
+    sp.coins.forEach(v=>{const c=coinEl(v);c.dataset.v=v;c.onclick=()=>{if(tray.querySelectorAll('.coin,.note').length>=24)return;beep(880,.05,'triangle',.06);total+=v;const t=coinEl(v);t.onclick=()=>{total-=v;t.remove();upd()};tray.appendChild(t);upd()};bank.appendChild(c)});
+    const ok=h('button','btn go',r.pay?'거스름돈 주기 ✔':'돈 내기 ✔');
+    ok.onclick=()=>{if(total===need){good();msg.textContent='';ok.disabled=true;setTimeout(()=>{k++;next()},700)}
+      else{bad();shake(tray);const hn=cx.miss();msg.innerHTML=(LV==='hard'?'금액이 맞지 않아요!':total<need?'돈이 모자라요!':'돈이 너무 많아요!')+(hn?` <b>${need}원</b>을 만들어요.`:'')}};
+    el.append(shop,bank,tray,sum,msg,ok);upd();
+  };next();
+};
+RUN.balloon=(sp,el,done,cx)=>{
+  el.innerHTML='';
+  const bar=h('div','bbar'),area=h('div','barea');el.append(bar,area);
+  let got=0,lives=sp.lives||0,alive=true,last=0,acc=0;const bs=[];
+  const okP=sp.items.filter(x=>x[1]),noP=sp.items.filter(x=>!x[1]);
+  const colors=['#ff6b6b','#f7b731','#4cc35d','#4d96ff','#b26bff','#ff8fab','#20c4b4'];
+  const upd=()=>bar.innerHTML=`<span>🎯 ${got} / ${sp.need}</span>`+(sp.lives?`<span>${'❤️'.repeat(Math.max(lives,0))}${'🤍'.repeat(sp.lives-Math.max(lives,0))}</span>`:'');
+  upd();let streak=0,sOk=null;
+  function spawn(){let useOk=Math.random()<.55;if(sOk!==null&&streak>=2)useOk=!sOk;if(useOk===sOk)streak++;else{sOk=useOk;streak=1}
+    const src=useOk?okP:noP;const it=src[Math.random()*src.length|0];
+    const b=h('div','bal'+(strip(it[0]).length>3?' w':''),`<span>${it[0]}</span>`);b.dataset.ok=it[1]?1:0;
+    b.style.left=(4+Math.random()*76)+'%';b.style.background=colors[Math.random()*colors.length|0];b._y=-110;area.appendChild(b);bs.push(b);
+    b.addEventListener('pointerdown',e=>{e.preventDefault();if(b._dead||!alive)return;b._dead=1;
+      if(b.dataset.ok==='1'){good();b.classList.add('pop');got++;upd();setTimeout(()=>b.remove(),300);if(got>=sp.need){alive=false;bs.forEach(x=>x._dead=1);setTimeout(done,700)}}
+      else{bad();b.classList.add('boo');setTimeout(()=>b.remove(),450);const hn=cx.miss();if(hn)bs.forEach(x=>{if(x.dataset.ok==='1'&&!x._dead)x.classList.add('hint')});if(sp.lives){lives--;upd();if(lives<=0){alive=false;fail()}}}});
+  }
+  function fail(){const f=h('div','fail','<div>😮 앗, 하트가 모두 없어졌어요!</div>');const b=h('button','btn go','다시 도전 ↻');b.onclick=()=>RUN.balloon(sp,el,done,cx);f.appendChild(b);area.appendChild(f)}
+  function tick(ts){if(!alive||!area.isConnected)return;const dt=last?Math.min(60,ts-last):16;last=ts;acc+=dt;if(acc>sp.every){acc=0;spawn()}
+    const H=area.clientHeight||400;
+    for(let i=bs.length-1;i>=0;i--){const b=bs[i];if(!b.isConnected){bs.splice(i,1);continue}if(b._dead)continue;b._y+=sp.speed*dt/1000;b.style.bottom=b._y+'px';if(b._y>H+10){b.remove();bs.splice(i,1)}}
+    requestAnimationFrame(tick)}
+  spawn();requestAnimationFrame(tick);
+};
+RUN.path=(sp,el,done,cx)=>{
+  const R=sp.grid.length,C=sp.grid[0].length;
+  const g=h('div','grid');g.style.gridTemplateColumns=`repeat(${C},1fr)`;g.style.maxWidth=Math.min(560,C*100)+'px';
+  const cells=[];sp.grid.forEach((row,r)=>row.forEach((v,c)=>{const d=h('button','cell',String(v));d.dataset.r=r;d.dataset.c=c;g.appendChild(d);cells.push(d)}));
+  const at=(r,c)=>(r>=0&&r<R&&c>=0&&c<C)?cells[r*C+c]:null;
+  let k=0,[pr,pc]=sp.path[0];at(pr,pc).classList.add('on','start');const[gr,gc]=sp.path[sp.path.length-1];at(gr,gc).classList.add('goal');
+  const showNb=()=>{cells.forEach(x=>x.classList.remove('nb'));if(sp.nb)[[1,0],[-1,0],[0,1],[0,-1]].forEach(([a,b])=>{const x=at(pr+a,pc+b);if(x&&!x.classList.contains('on'))x.classList.add('nb')})};
+  showNb();
+  cells.forEach(d=>d.onclick=()=>{if(d.classList.contains('on')||k>=sp.path.length-1)return;const r=+d.dataset.r,c=+d.dataset.c,[nr,nc]=sp.path[k+1];
+    if(r===nr&&c===nc){good();d.classList.add('on');k++;pr=r;pc=c;showNb();if(k===sp.path.length-1)setTimeout(done,600)}
+    else{bad();shake(d);if(cx.miss())glow(at(nr,nc))}});
+  el.appendChild(g);
+};
+RUN.find=(sp,el,done,cx)=>{
+  const area=h('div','farea'),cnt=h('div','cnt');let left=sp.count;
+  const upd=()=>cnt.innerHTML=`<span style="font-size:28px">${sp.target}</span> ${sp.count-left} / ${sp.count} 찾았어요`;upd();
+  const N=sp.count+sp.n,cols=Math.ceil(Math.sqrt(N*1.6)),rows=Math.ceil(N/cols);
+  const slots=shuffle([...Array(cols*rows).keys()]).slice(0,N);
+  slots.forEach((s,i)=>{const isT=i<sp.count;const e=isT?sp.target:sp.clutter[i%sp.clutter.length];
+    const b=h('button','fi'+(isT?' ft':''),e);const c=s%cols,r=Math.floor(s/cols);
+    b.style.left=((c+.25+Math.random()*.5)/cols*100)+'%';b.style.top=((r+.25+Math.random()*.5)/rows*100)+'%';
+    b.style.fontSize=(isT?sp.size:30+Math.random()*16)+'px';b.style.transform+=` rotate(${(Math.random()*50-25)|0}deg)`;
+    if(isT)b.style.opacity=sp.fade||1;
+    b.onclick=()=>{if(b.classList.contains('found'))return;if(isT){good();b.classList.add('found');left--;upd();if(!left)setTimeout(done,600)}else{bad();shake(b);if(cx.miss())glow(area.querySelector('.ft:not(.found)'))}};
+    area.appendChild(b)});
+  el.append(cnt,area);
+};
+RUN.room=(sp,el,done,cx)=>{
+  const solved=new Set();
+  const inv=h('div','inv'),scene=h('div','scene'),bub=h('div','bubble',sp.hello||'물건을 눌러서 살펴봐요 👆');
+  scene.style.background=sp.bg;
+  const updInv=()=>{inv.innerHTML='🎒 숫자 열쇠: '+sp.puzzles.map((p,i)=>solved.has(i)?`<span class="key" style="--c:${COL[p.c]}">${p.c} ${p.d}</span>`:`<span class="key empty" style="--c:${COL[p.c]}">${p.c} ?</span>`).join('')};
+  const msg=t=>{bub.innerHTML=t;shake(bub)};
+  sp.objects.forEach(o=>{const b=h('button','obj'+(o.p!=null?' has':''),o.e);b.style.left=o.x+'%';b.style.top=o.y+'%';b.style.fontSize=(o.s||56)+'px';if(o.p!=null)b.dataset.p=o.p;if(o.door)b.dataset.door=1;
+    b.onclick=()=>{
+      if(o.door){if(solved.size<sp.puzzles.length){bad();shake(b);msg('🔒 문이 잠겨 있어요. <b>❔</b> 표시가 있는 물건의 문제를 풀어서 숫자 열쇠를 모두 모아요!');return}lock();return}
+      if(o.p!=null){const p=sp.puzzles[o.p];if(solved.has(o.p)){msg(`이미 풀었어요! ${p.c} 숫자는 <b>${p.d}</b>`);return}
+        if(o.m)msg(o.m);
+        const box=h('div','');box.appendChild(h('h3','',p.spec.title));const pr=h('div','prompt',`<span>${p.spec.prompt}</span>`);const sb=h('button','spk','🔊');sb.onclick=()=>speak(p.spec.prompt+' '+strip(CURQ));pr.prepend(sb);box.appendChild(pr);
+        if(LV==='easy'&&p.spec.tip)box.appendChild(h('div','tip','💡 '+p.spec.tip));
+        const body=h('div','body');box.appendChild(body);openOv(box);CURQ='';
+        RUN[p.spec.type](p.spec,body,()=>{solved.add(o.p);b.classList.add('solved');updInv();closeOv();fanfare();msg(`${p.c} 숫자 열쇠 <b style="font-size:28px">${p.d}</b> 를 얻었어요!`+(solved.size===sp.puzzles.length?' 이제 🚪 문으로 가 봐요!':''))},cx);
+        return}
+      if(o.m)msg(o.m);
+    };scene.appendChild(b)});
+  function lock(){
+    const box=h('div','lockbox');const n=sp.code.length;
+    box.innerHTML=`<h3>🔐 비밀번호 ${n}자리</h3><div class="lq">${sp.lockQ}</div><div class="slots2"></div><div class="inv" style="margin-top:8px">${inv.innerHTML}</div><div class="pad"></div><div class="msg"></div>`;
+    const sl=box.querySelector('.slots2'),pad=box.querySelector('.pad'),m=box.querySelector('.msg');let ent=[];
+    const draw=()=>{sl.innerHTML=sp.code.map((_,i)=>`<div>${sp.showOrder?`<small>${sp.order[i]}</small>`:''}${ent[i]!=null?ent[i]:''}</div>`).join('')};draw();
+    [1,2,3,4,5,6,7,8,9,0].forEach(d=>{const b=h('button','',String(d));b.dataset.d=d;b.onclick=()=>{if(ent.length>=n)return;beep(700,.05);ent.push(d);draw();
+      if(ent.length===n){if(ent.join('')===sp.code.join('')){good();setTimeout(()=>{closeOv();done()},500)}else{bad();shake(sl);const hn=cx.miss();m.innerHTML='비밀번호가 달라요!'+(hn?`<br>순서: ${sp.order.join(' → ')}`:'');setTimeout(()=>{ent=[];draw()},700)}}};pad.appendChild(b)});
+    const bk=h('button','','⌫');bk.onclick=()=>{ent.pop();draw()};pad.appendChild(bk);
+    openOv(box);
+  }
+  updInv();el.append(inv,scene,bub);
+};
+/* ───── 화면 흐름 ───── */
+const app=$('#app');let M=0;
+function cxNew(){M=0;return{miss(){M++;return M>=HINT_AT}}}
+function intro(){
+  app.innerHTML='';const c=h('div','card');
+  c.innerHTML=`<div class="big">${INFO.emoji}</div><h1>${INFO.title}</h1><div class="lvp">${GRADE}학년 · ${LVN[LV]}</div><p class="story">${D.story}</p>
+  <div class="map">${D.stages.map((s,k)=>`<div class="mp ${k<S.i?'done':''}">${s.icon}<small>${s.title}</small></div>`).join('')}</div>
+  <p class="lvinfo">${{easy:'💡 도움말이 있고, 틀리면 바로 힌트를 줘요.',normal:'세 번 틀리면 힌트를 줘요.',hard:'힌트 없이 내 힘으로 도전!'}[LV]}</p>`;
+  const sb=h('button','spk','🔊');sb.style.marginRight='8px';sb.onclick=()=>speak(INFO.title+'. '+D.story);
+  const go=h('button','btn go',S.i>0?'이어서 하기 ▶':'시작하기 ▶');go.id='start';go.onclick=()=>stage();
+  c.append(sb,go);
+  if(S.i>0){const r=h('button','btn ghost','처음부터');r.onclick=()=>{S=fresh();save();stage()};c.appendChild(r)}
+  app.appendChild(c);
+}
+function stage(){
+  const sp=D.stages[S.i];app.innerHTML='';CURQ='';
+  app.appendChild(h('div','stagehead',`<div class="dots">${D.stages.map((s,k)=>`<span class="${k<S.i?'d':k===S.i?'c':''}">${s.icon}</span>`).join('')}</div><h2>${sp.icon} ${sp.title}</h2>`));
+  const pr=h('div','prompt',`<span>${sp.prompt}</span>`);const sb=h('button','spk','🔊');sb.onclick=()=>speak(sp.title+'. '+sp.prompt+' '+strip(CURQ));pr.prepend(sb);app.appendChild(pr);
+  if(LV==='easy'&&sp.tip)app.appendChild(h('div','tip','💡 '+sp.tip));
+  const body=h('div','body');app.appendChild(body);
+  RUN[sp.type](sp,body,clear,cxNew());
+  window.scrollTo(0,0);
+}
+function clear(){
+  const st=M===0?3:M<=2?2:1;S.stars[S.i]=st;S.i++;
+  if(S.i>=D.stages.length){S.end=Date.now();save();markDone();return end()}
+  save();fanfare();confetti();
+  popup(`<div class="big">${'⭐'.repeat(st)}${'<span style="opacity:.25">⭐</span>'.repeat(3-st)}</div><h2>${['','좋아요!','잘했어요!','최고예요!'][st]}</h2><p>다음 놀이: ${D.stages[S.i].icon} ${D.stages[S.i].title}</p>`,'다음 ▶',stage);
+}
+function markDone(){try{const id=GAME+'@'+LV;if(localStorage.getItem('class-done-skip-'+id)===String(S.end))return;const d=JSON.parse(localStorage.getItem('class-done')||'{}')||{};if(!d[id]){d[id]={how:'auto',at:new Date().toISOString()};localStorage.setItem('class-done',JSON.stringify(d))}}catch(e){}}
+function end(){
+  const tot=S.stars.reduce((a,b)=>a+(b||0),0),max=D.stages.length*3;
+  const file=location.pathname.split('/').pop()||'index.html';
+  app.innerHTML=`<div class="card"><div class="big">🏆</div><h1>${D.endTitle}</h1><p class="story">${D.endText}</p><div style="font-family:Jua;font-size:30px;margin:10px 0">⭐ ${tot} / ${max}</div>
+  ${LV!=='hard'?`<a class="btn go" id="nextlv" href="${file}?lv=${LV==='easy'?'normal':'hard'}">다음 단계 ${LV==='easy'?'🟡 보통':'🔴 어려움'} 도전 →</a><br>`:''}
+  <a class="btn" href="index.html">🏠 게임 교실로</a><button class="btn ghost" id="again">처음부터 다시</button></div>`;
+  $('#again').onclick=()=>{S=fresh();save();intro()};fanfare();confetti();
+}
+S.end?end():intro();
+</script>
+</body>
+</html>
