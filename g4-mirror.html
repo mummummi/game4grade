@@ -320,10 +320,10 @@ const THEME={
    bg:()=>ART.wall('#2a1630','#140a18','panel')+ART.floor('#4a2c1a','#24140b','wood')+ART.curtain(0,260,'#8b1e2e')+ART.curtain(1340,260,'#8b1e2e')+R(0,0,1600,60,'#5b1020')+ART.light(800,80,300),
    objects:[
     {id:'screen',title:'⬜ 그림자 스크린',art:R(520,130,560,360,'#f4ecd8','filter="url(#sh)"')+R(510,120,580,16,'#3d2b1f')+EM(800,320,SHAD[0],170,'style="filter:brightness(0)" opacity=".85"'),need:'torch',locked:'하얀 스크린 앞에 무언가 놓여 있지만, 빛이 없어 아무 그림자도 생기지 않는다.',
-     lock:()=>({kind:'choice',ans:SHAD[1],opts:['토끼','독수리','사슴','고양이'],q:'스크린에 비친 그림자는 무엇일까?'}),html:()=>`<div class="box">🔦 손전등을 비추자 스크린에 그림자가 생겼다!</div><div class="center" style="font-size:150px;line-height:1.1;filter:brightness(0);opacity:.85">${SHAD[0]}</div>`,give:'wand',done:'정답! 스크린 뒤에서 🪄 마술 지팡이가 떨어졌다.'},
+     lock:()=>({kind:'choice',ans:SHAD[1],opts:['토끼','독수리','사슴','고양이'],q:'스크린에 비친 그림자는 무엇일까?'}),html:()=>`<div class="box">🔦 손전등을 비추자 스크린에 그림자가 생겼다!</div><div class="center" style="font-size:150px;line-height:1.1;filter:brightness(0);opacity:.85">${SHAD[0]}</div>`,give:'wand',set:'shadow',done:'정답! 스크린 뒤에서 🪄 마술 지팡이가 떨어졌다.'},
     {id:'lightbox',title:'🎩 마술 소품 상자',art:R(160,540,220,120,'#3a2a4a','rx="10" filter="url(#sh)"')+EM(270,520,'🎩',70),html:'<div class="box">상자 안에서 <b>손전등</b>을 찾았다. "빛과 물체가 있으면 그림자가 생긴다" — 미러 박사의 메모</div>',give:'torch'},
     {id:'quiz',title:'📜 무대 감독의 퀴즈',art:ART.note(1150,560,'#ffe082'),lock:()=>({kind:'choice',ans:LIGHTQ[1],opts:LIGHTQ[2],q:LIGHTQ[0]}),html:'<div class="paper">"그림자의 비밀을 아는 자에게 무대 출입권을 주노라."</div>',give:'ticket'},
-    {id:'door',door:true,title:'🚪 거울의 방',art:ART.door(1300,200,'#4a148c','거울의 방'),need:'ticket',locked:'문지기 인형이 손을 내민다. "출입권을 보여 주세요!"',html:'<div class="box">🎟️ 출입권을 내자 문이 열렸다.</div>'},
+    {id:'door',door:true,title:'🚪 거울의 방',art:ART.door(1300,200,'#4a148c','거울의 방'),when:['shadow'],pre:'🔒 문지기 인형: "그림자 스크린의 비밀부터 풀고 오세요!"',need:'ticket',locked:'문지기 인형이 손을 내민다. "출입권을 보여 주세요!"',html:'<div class="box">🎟️ 출입권을 내자 문이 열렸다.</div>'},
    ],
    hints:()=>L(['소품 상자에서 손전등을 꺼내 스크린을 비춰요.','손전등이 물체에 가까우면 빛이 더 많이 가려져요.',`${SHAD[1]} · ${LIGHTQ[1]}`],['그림자의 모양을 보고 동물을 떠올려요.','그림자는 빛이 물체에 막혀서 생겨요.',`${SHAD[1]} · ${LIGHTQ[1]}`],['뿔이 있는 그림자예요.','물체에서 빛이 멀어지면 그림자는 어떻게 될까요?'])},
   {name:'거울의 방',icon:'🪞',
@@ -347,6 +347,8 @@ const THEME={
 
 </script>
 <script>
+THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{if(!o._rid){o.id='r'+ri+'_'+o.id;o._rid=1}}));/* 방마다 물건 id를 따로 → 다른 방의 같은 이름 문/물건이 '이미 푼 것'으로 처리되는 문제 방지 */
+try{const U=S.used||{};if(Object.keys(U).some(k=>!/^[pu]_r\d+_/.test(k))){THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{const base=o.id.replace(/^r\d+_/,'');['p_','u_'].forEach(pf=>{if(U[pf+base]&&(ri<S.room||(base!=='door'&&ri<=S.room)))U[pf+o.id]=1})}));Object.keys(U).forEach(k=>{if(!/^[pu]_r\d+_/.test(k))delete U[k]});S.used=U;save()}}catch(e){}/* 예전 저장 기록 옮기기 */
 TH=THEME;if(GRADE<=2)document.body.classList.add('kids');S.max=S.max||0;render();
 </script>
 </body>

@@ -315,7 +315,7 @@ const THEME={
   title:'화산섬 관측소',emoji:'🌋',
   story:'과학 탐사대와 함께 <b>화산섬 관측소</b>에 왔어요. 그런데 갑자기 "쿠르릉!" 땅이 흔들리고, 관측소 문이 모두 비상 잠금 상태가 되었어요.<br>화산이 깨어나기 전에 관측 기록을 분석하고, 암석 보관실을 지나 <b>대피 통로</b>로 탈출해야 해요!',
   endText:'대피 통로를 빠져나와 구조선에 오르자, 멀리서 화산이 작은 연기를 뿜었어요. 여러분이 남긴 관측 기록 덕분에 섬 주민 모두가 안전하게 대피했어요. <b>최고의 화산 탐사대원</b>이에요! 🌋',
-  items:{goggle:{e:'🥽',n:'보안경'},key:{e:'🗝️',n:'보관실 열쇠'},filt:{e:'🧻',n:'거름종이'},lamp:{e:'🔦',n:'비상 랜턴'}},
+  items:{goggle:{e:'🥽',n:'보안경'},key:{e:'🗝️',n:'보관실 열쇠'},lamp:{e:'🔦',n:'비상 랜턴'}},
   rooms:[
   {name:'관측실',icon:'📈',
    bg:()=>ART.wall('#e3e8ec','#c0cad1','metal')+ART.floor('#9aa7ae','#6a777e','tile')+'<g transform="translate(-300 0)">'+ART.window(980,90,480,240,ART.skyR(980,90,480,240,'#ffb27a','#ffe0b2')+P('M1060 330 L1220 150 L1380 330 Z','#5d4037')+P('M1190 180 L1220 150 L1250 180 Z','#ff7043')+E(1220,130,40,20,'#9e9e9e','opacity=".8"'))+'</g>'+ART.lamp(600,100),
@@ -336,7 +336,7 @@ const THEME={
     {id:'rocks',title:'🪨 암석 진열대',art:R(100,520,500,30,'url(#wood)','rx="6" filter="url(#sh)"')+E(180,500,50,30,'#2b2b2b')+C(165,495,4,'#555')+C(195,505,5,'#555')+E(320,500,50,30,'#d7ccc8')+C(310,495,4,'#9e9e9e')+C(335,505,3,'#424242')+E(460,500,50,30,'#eeeeee'),
      lock:()=>({kind:'choice',ans:ROCKQ[1],opts:ROCKQ[2],q:ROCKQ[0]}),html:'<div class="box">진열대 이름표가 모두 떨어져 있다. 질문에 맞는 암석의 이름을 고르면 진열장이 열린다.</div>',give:'key',done:'진열장 안에서 🗝️ 보관실 열쇠를 찾았다!'},
     {id:'tray',title:'🧪 섞인 가루 실험대',art:R(660,520,300,30,'url(#metal)','rx="6"')+E(810,500,80,22,'#bcaaa4')+[0,1,2].map(i=>C(770+i*40,495,6,['#424242','#ffe082','#fff'][i])).join('')+R(680,550,20,100,'#607d8b')+R(920,550,20,100,'#607d8b'),need:'key',locked:'실험 서랍이 잠겨 있다.',
-     lock:()=>({kind:'order',ans:MIX,opts:MIX.slice().sort(),q:'섞인 물질을 분리하는 순서대로 누르세요'}),html:()=>`<div class="paper">화산재 조사용 혼합물: <b>${MIXT}</b><br>각각을 따로 모으려면 어떤 순서로 해야 할까?</div>`,give:'filt',done:'분리 성공! 실험대 아래에서 🧻 거름종이 묶음과 쪽지를 찾았다.',set:'mix'},
+     lock:()=>({kind:'order',ans:MIX,opts:MIX.slice().sort(),q:'섞인 물질을 분리하는 순서대로 누르세요'}),html:()=>`<div class="paper">화산재 조사용 혼합물: <b>${MIXT}</b><br>각각을 따로 모으려면 어떤 순서로 해야 할까?</div>`,done:'분리 성공! 실험대 아래에서 쪽지를 찾았다.',set:'mix'},
     {id:'door',door:true,title:'🚪 대피 통로 문',art:ART.door(1000,220,'#3e2723','대피 통로'),when:['mix'],pre:'🔒 문 위 전광판: "혼합물 분리 실험을 완료해야 통로가 열립니다."',
      lock:()=>({kind:'dial',ans:DANS.replace('.',''),q:`문 비밀번호 = 계산 결과 (소수점은 빼고)`}),html:()=>`<div class="paper">실험대 쪽지: "화산재 무게: 첫째 상자 <b>${DEC[0]}kg</b>, 둘째 상자 <b>${DEC[1]}kg</b>.<br>${DEC[2]==='+'?'두 상자의 무게를 더한 값':'첫째 상자에서 둘째 상자를 뺀 값'}의 숫자를 차례로 입력하라. (소수점은 빼고!)"</div>`},
    ],
@@ -354,6 +354,8 @@ const THEME={
 
 </script>
 <script>
+THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{if(!o._rid){o.id='r'+ri+'_'+o.id;o._rid=1}}));/* 방마다 물건 id를 따로 → 다른 방의 같은 이름 문/물건이 '이미 푼 것'으로 처리되는 문제 방지 */
+try{const U=S.used||{};if(Object.keys(U).some(k=>!/^[pu]_r\d+_/.test(k))){THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{const base=o.id.replace(/^r\d+_/,'');['p_','u_'].forEach(pf=>{if(U[pf+base]&&(ri<S.room||(base!=='door'&&ri<=S.room)))U[pf+o.id]=1})}));Object.keys(U).forEach(k=>{if(!/^[pu]_r\d+_/.test(k))delete U[k]});S.used=U;save()}}catch(e){}/* 예전 저장 기록 옮기기 */
 TH=THEME;if(GRADE<=2)document.body.classList.add('kids');S.max=S.max||0;render();
 </script>
 </body>
