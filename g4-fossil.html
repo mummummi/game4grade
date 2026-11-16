@@ -353,6 +353,9 @@ const THEME={
 
 </script>
 <script>
+/* 🧸 분위기 소품 (문제와 상관없는 기물 · 눌러 보면 설명만 나와요) */
+const DECOR=[[["f", "⛏️", "곡괭이", 90, 800, 125, "땅을 파는 곡괭이예요. 지금은 쉬는 중이에요."], ["w", "🧢", "탐사 모자", 990, 440, 115, "햇볕을 가리는 탐사대 모자가 걸려 있어요."], ["f", "🪣", "흙 양동이", 1470, 800, 125, "파낸 흙이 가득 담겨 있어요. 화석은 없어요."]], [["w", "📚", "공룡 도감", 810, 250, 115, "여러 공룡 그림이 있는 두꺼운 책이에요."], ["f", "🖌️", "화석 솔", 90, 735, 125, "화석의 흙을 털어 내는 부드러운 솔이에요."], ["w", "🗺️", "발굴지 지도", 345, 525, 115, "구역마다 번호가 붙어 있는 지도예요."]], [["f", "🦖", "티라노 모형", 90, 735, 125, "크기를 비교하려고 만든 모형이에요. 이빨이 뾰족해요!"], ["w", "🏷️", "표본 번호표", 90, 250, 115, "\"표본 No.128 · 조개 화석\" 이름표예요."], ["f", "📦", "포장 상자", 495, 800, 125, "화석을 안전하게 옮기는 스티로폼 상자예요."]]];
+DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:(d[0]==='f'?E(d[3],d[4]+d[5]*0.42,d[5]*0.42,d[5]*0.09,'#0000002e'):'')+EM(d[3],d[4],d[1],d[5],'filter="url(#sh)"'),html:'<div class="box">'+d[6]+'</div>'}))});
 THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{if(!o._rid){o.id='r'+ri+'_'+o.id;o._rid=1}}));/* 방마다 물건 id를 따로 → 다른 방의 같은 이름 문/물건이 '이미 푼 것'으로 처리되는 문제 방지 */
 try{const U=S.used||{};if(Object.keys(U).some(k=>!/^[pu]_r\d+_/.test(k))){THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{const base=o.id.replace(/^r\d+_/,'');['p_','u_'].forEach(pf=>{if(U[pf+base]&&(ri<S.room||(base!=='door'&&ri<=S.room)))U[pf+o.id]=1})}));Object.keys(U).forEach(k=>{if(!/^[pu]_r\d+_/.test(k))delete U[k]});S.used=U;save()}}catch(e){}/* 예전 저장 기록 옮기기 */
 TH=THEME;if(GRADE<=2)document.body.classList.add('kids');S.max=S.max||0;render();

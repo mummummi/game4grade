@@ -348,6 +348,9 @@ const THEME={
 
 </script>
 <script>
+/* 🧸 분위기 소품 (문제와 상관없는 기물 · 눌러 보면 설명만 나와요) */
+const DECOR=[[["f", "🏠", "세모 지붕 집", 630, 735, 125, "지붕이 뾰족한 이웃집이에요. 문이 잠겨 있지 않지만 비었어요."], ["w", "🚩", "삼각 깃발", 630, 250, 115, "마을을 꾸민 삼각 깃발이 펄럭여요."], ["f", "🍙", "삼각김밥 가게", 1500, 800, 125, "\"삼각형 마을 명물!\" 간판이 있어요."]], [["f", "⛲", "분수대", 1065, 735, 125, "네모난 분수대에서 물이 솟아요."], ["w", "🪟", "격자 창문", 960, 250, 115, "작은 정사각형 유리가 모여 있는 창문이에요."], ["f", "🧱", "벽돌 더미", 1470, 800, 125, "직사각형 벽돌이 쌓여 있어요."]], [["w", "⭐", "별 모양 장식", 1215, 250, 115, "오각형 안에 별이 숨어 있는 장식이에요."], ["f", "⚽", "축구공", 1140, 735, 125, "오각형과 육각형으로 만든 공이에요."], ["w", "🐝", "벌집 무늬 벽", 1500, 525, 115, "정육각형이 촘촘한 벽 무늬예요."]]];
+DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:(d[0]==='f'?E(d[3],d[4]+d[5]*0.42,d[5]*0.42,d[5]*0.09,'#0000002e'):'')+EM(d[3],d[4],d[1],d[5],'filter="url(#sh)"'),html:'<div class="box">'+d[6]+'</div>'}))});
 THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{if(!o._rid){o.id='r'+ri+'_'+o.id;o._rid=1}}));/* 방마다 물건 id를 따로 → 다른 방의 같은 이름 문/물건이 '이미 푼 것'으로 처리되는 문제 방지 */
 try{const U=S.used||{};if(Object.keys(U).some(k=>!/^[pu]_r\d+_/.test(k))){THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{const base=o.id.replace(/^r\d+_/,'');['p_','u_'].forEach(pf=>{if(U[pf+base]&&(ri<S.room||(base!=='door'&&ri<=S.room)))U[pf+o.id]=1})}));Object.keys(U).forEach(k=>{if(!/^[pu]_r\d+_/.test(k))delete U[k]});S.used=U;save()}}catch(e){}/* 예전 저장 기록 옮기기 */
 TH=THEME;if(GRADE<=2)document.body.classList.add('kids');S.max=S.max||0;render();

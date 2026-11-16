@@ -347,6 +347,9 @@ const THEME={
 
 </script>
 <script>
+/* 🧸 분위기 소품 (문제와 상관없는 기물 · 눌러 보면 설명만 나와요) */
+const DECOR=[[["w", "🎭", "가면", 90, 250, 115, "무대에서 쓰는 반짝이 가면이에요."], ["f", "🐇", "마술 토끼", 645, 735, 125, "모자에서 나온 토끼가 당근을 먹어요."], ["f", "🃏", "흩어진 카드", 1500, 800, 125, "바닥에 트럼프 카드가 흩어져 있어요. 그냥 소품이에요."]], [["w", "🕯️", "촛대", 1395, 250, 115, "거울에 비쳐서 촛불이 여러 개처럼 보여요."], ["f", "💐", "꽃병", 90, 735, 125, "거울 속 꽃병과 진짜 꽃병… 진짜는 이쪽!"], ["w", "🖼️", "마술사 초상화", 1050, 250, 115, "콧수염을 기른 마술사가 윙크하는 그림이에요."]], [["w", "🌀", "어지러운 무늬", 90, 250, 115, "빙글빙글 무늬를 보니 머리가 어질어질해요."], ["f", "🎩", "빈 모자", 90, 735, 125, "뒤집어 봐도 아무것도 안 나와요."], ["f", "🪄", "부러진 지팡이", 840, 735, 125, "마술 연습 중에 부러졌대요."]]];
+DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:(d[0]==='f'?E(d[3],d[4]+d[5]*0.42,d[5]*0.42,d[5]*0.09,'#0000002e'):'')+EM(d[3],d[4],d[1],d[5],'filter="url(#sh)"'),html:'<div class="box">'+d[6]+'</div>'}))});
 THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{if(!o._rid){o.id='r'+ri+'_'+o.id;o._rid=1}}));/* 방마다 물건 id를 따로 → 다른 방의 같은 이름 문/물건이 '이미 푼 것'으로 처리되는 문제 방지 */
 try{const U=S.used||{};if(Object.keys(U).some(k=>!/^[pu]_r\d+_/.test(k))){THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{const base=o.id.replace(/^r\d+_/,'');['p_','u_'].forEach(pf=>{if(U[pf+base]&&(ri<S.room||(base!=='door'&&ri<=S.room)))U[pf+o.id]=1})}));Object.keys(U).forEach(k=>{if(!/^[pu]_r\d+_/.test(k))delete U[k]});S.used=U;save()}}catch(e){}/* 예전 저장 기록 옮기기 */
 TH=THEME;if(GRADE<=2)document.body.classList.add('kids');S.max=S.max||0;render();
