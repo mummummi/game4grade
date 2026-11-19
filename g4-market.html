@@ -65,6 +65,7 @@ button{font-family:inherit;font-size:18px;border:0;border-radius:12px;padding:10
 .opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px}
 .opt{background:var(--panel2);color:var(--ink);border:2px solid var(--line);min-width:110px;padding:12px 16px;font-size:18px}
 .opt.big{font-size:34px;min-width:80px}
+.mopt.on,.mr.on{border-color:var(--gold)!important;background:#ffd54f33!important}.mlist{display:flex;flex-direction:column;gap:8px;margin:10px auto;max-width:620px}.mrow{display:flex;align-items:center;gap:10px;background:var(--panel2);border:2px solid var(--line);border-radius:14px;padding:8px 12px}.ml{flex:1;font-size:18px}.ma{opacity:.6}.mr{min-width:150px;background:#ffffff14;color:var(--ink);border:2px dashed var(--line);border-radius:12px;padding:10px 12px;font-size:18px}
 .ordercards{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0}
 .ordercards button{background:var(--panel2);color:var(--ink);border:2px solid var(--line);padding:10px 14px;font-size:17px;min-width:90px;position:relative}
 .ordercards button.on{border-color:var(--gold);opacity:.55}
@@ -202,15 +203,17 @@ const norm=v=>String(v).replace(/\s|,/g,'').toLowerCase();
 function lockHTML(k){
   if(k.kind==='dial')return `<div class="dials">${Array.from({length:k.ans.length},(_,i)=>`<div class="dial"><button data-u="${i}">▲</button><div class="d" id="dg${i}">0</div><button data-dn="${i}">▼</button></div>`).join('')}</div><div class="center"><button class="btn" id="lkOk">열기</button></div>`;
   if(k.kind==='text')return `<form class="lockform" id="lf"><input id="li" maxlength="${k.max||14}" placeholder="${k.ph||''}" autocomplete="off"><button class="btn">열기</button></form>`;
-  if(k.kind==='dir')return `<div class="seqshow" id="sq"></div><div class="pad">${[['U','⬆️'],['D','⬇️'],['L','⬅️'],['R','➡️']].map(([v,e])=>`<button data-v="${v}">${e}</button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
-  if(k.kind==='color')return `<div class="seqshow" id="sq"></div><div class="pad">${k.opts.map(([v,c])=>`<button class="c" data-v="${v}" style="background:${c}" title="${v}"></button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
-  if(k.kind==='keys')return `<div class="seqshow" id="sq"></div><div class="keys">${(k.opts||['도','레','미','파','솔','라','시']).map(v=>`<button data-v="${v}">${v}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">⌫ 지우기</button> <button class="btn" id="lkOk">확인</button></div>`;
-  if(k.kind==='choice')return `<div class="opts">${k.opts.map(o=>`<button class="opt${k.big?' big':''}" data-v="${o}">${o}</button>`).join('')}</div>`;
-  if(k.kind==='order')return `<div class="ordercards">${k.opts.map(o=>`<button data-v="${o}">${o}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">다시 고르기</button></div>`;
+  if(k.kind==='dir')return `<div class="seqshow" id="sq"></div><div class="pad">${[['U','⬆️'],['D','⬇️'],['L','⬅️'],['R','➡️']].map(([v,e])=>`<button data-v="${String(v).replace(/"/g,'&quot;')}">${e}</button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='color')return `<div class="seqshow" id="sq"></div><div class="pad">${k.opts.map(([v,c])=>`<button class="c" data-v="${String(v).replace(/"/g,'&quot;')}" style="background:${c}" title="${v}"></button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='keys')return `<div class="seqshow" id="sq"></div><div class="keys">${(k.opts||['도','레','미','파','솔','라','시']).map(v=>`<button data-v="${String(v).replace(/"/g,'&quot;')}">${v}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">⌫ 지우기</button> <button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='choice')return `<div class="opts">${k.opts.map(o=>`<button class="opt${k.big?' big':''}" data-v="${String(o).replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>`;
+  if(k.kind==='order')return `<div class="ordercards">${k.opts.map(o=>`<button data-v="${String(o).replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">다시 고르기</button></div>`;
+  if(k.kind==='multi')return `<div class="opts">${k.opts.map(o=>`<button class="opt mopt${k.big?' big':''}" data-m="${String(o).replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div><div class="center muted" style="margin-top:6px">맞는 것을 <b>모두</b> 눌러 고른 뒤 확인을 눌러요</div><div class="center"><button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='match'||k.kind==='sort'){const ch=k.kind==='match'?k.right:k.bins;return `<div class="mlist">${k.left.map((l,i)=>`<div class="mrow"><span class="ml">${l}</span><span class="ma">${k.kind==='match'?'↔':'→'}</span><button class="mr" data-i="${i}">❔</button></div>`).join('')}</div><div class="center muted">${k.kind==='match'?'오른쪽 칸을 눌러 짝을 바꿔요':'칸을 눌러 어디에 들어갈지 바꿔요'} (${ch.join(' · ')})</div><div class="center"><button class="btn" id="lkOk">확인</button></div>`}
 }
 function bindLock(k,ok){
   const box=$('mbody'),msg=$('lm');let seq=[];
-  const judge=v=>{const good=k.kind==='choice'?v===k.ans:Array.isArray(k.ans)?norm(v)===norm(k.ans.join('')):[k.ans,...(k.alts||[])].some(a=>norm(v)===norm(a));
+  const judge=v=>{const good=v===true?true:v===false?false:k.kind==='choice'?v===k.ans:Array.isArray(k.ans)?norm(v)===norm(k.ans.join('')):[k.ans,...(k.alts||[])].some(a=>norm(v)===norm(a));
     if(good){msg.className='msg good';msg.textContent='✅ 철컥! 열렸다!';tone(660);setTimeout(()=>tone(990),120);box.querySelectorAll('button,input').forEach(x=>x.disabled=true);setTimeout(ok,FAST?0:900)}
     else{S.wrong++;save();msg.className='msg bad';msg.textContent=k.bad||'❌ 열리지 않는다…';tone(150,.3);const c=$('mcard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');if(k.kind!=='text'){seq=[];show()}}};
   const show=()=>{const sq=box.querySelector('#sq');if(sq)sq.innerHTML=seq.map(v=>k.kind==='color'?`<span style="background:${k.opts.find(o=>o[0]===v)[1]}"></span>`:k.kind==='dir'?`<span>${{U:'⬆️',D:'⬇️',L:'⬅️',R:'➡️'}[v]}</span>`:`<span>${v}</span>`).join('');
@@ -219,7 +222,9 @@ function bindLock(k,ok){
   if(k.kind==='text'){$('lf').onsubmit=e=>{e.preventDefault();const v=$('li').value;if(v.trim())judge(v)}}
   if(['dir','color','keys'].includes(k.kind)){box.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{if(seq.length>=(k.ans.length+3))return;seq.push(b.dataset.v);if(k.kind==='keys')tone(NOTE[b.dataset.v]||440,.4);else tone(600,.05);show()});box.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{seq.pop();show()});$('lkOk').onclick=()=>judge(seq.join(''))}
   if(k.kind==='choice')box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>judge(b.dataset.v));
-  if(k.kind==='order'){box.querySelectorAll('.ordercards [data-v]').forEach(b=>b.onclick=()=>{if(seq.includes(b.dataset.v))return;seq.push(b.dataset.v);tone(600,.05);show();if(seq.length===k.opts.length)judge(seq.join(''))});box.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{seq=[];show()})}
+  if(k.kind==='multi'){const on=new Set();const upd=()=>box.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',on.has(b.dataset.m)));box.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const v=b.dataset.m;on.has(v)?on.delete(v):on.add(v);tone(600,.04);upd()});box._set=a=>{a.forEach(v=>on.add(String(v)));upd()};$('lkOk').onclick=()=>{const A=k.ans.map(String);const g=on.size===A.length&&A.every(v=>on.has(v));if(!g){on.clear();upd()}judge(g)}}
+  if(k.kind==='match'||k.kind==='sort'){const ch=k.kind==='match'?k.right:k.bins;const st=k.left.map(()=>-1);const upd=()=>box.querySelectorAll('.mr').forEach(b=>{const i=+b.dataset.i;b.textContent=st[i]<0?'❔':ch[st[i]];b.classList.toggle('on',st[i]>=0)});box.querySelectorAll('.mr').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;st[i]=(st[i]+1)%ch.length;tone(520+st[i]*60,.04);upd()});box._set=a=>{a.forEach((v,i)=>st[i]=ch.indexOf(v));upd()};$('lkOk').onclick=()=>{if(st.some(x=>x<0)){msg.className='msg bad';msg.textContent='❔ 아직 정하지 않은 칸이 있어요.';return}judge(st.every((x,i)=>ch[x]===k.ans[i]))}}
+  if(k.kind==='order'){box.querySelectorAll('.ordercards [data-v]').forEach(b=>b.onclick=()=>{if(seq.includes(b.dataset.v))return;seq.push(b.dataset.v);tone(600,.05);show();if(seq.length===(Array.isArray(k.ans)?k.ans.length:k.opts.length))judge(seq.join('\u0001')===(Array.isArray(k.ans)?k.ans:[]).join('\u0001')||(!Array.isArray(k.ans)&&norm(seq.join(''))===norm(k.ans)))});box.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{seq=[];show()})}
 }
 /* ═══════ 물건 조사 ═══════ */
 const FAST=QS.get('fast')==='1';
@@ -300,7 +305,7 @@ window.__auto=async function(){const out=[];const sl=ms=>new Promise(r=>setTimeo
     for(const o of r.objects){if(!avail(o)||solved(o)&&!o.door)continue;if(o.need&&!has(o.need)&&!S.used['u_'+o.id])continue;if(o.door&&!o.lock&&!(o.needs||[]).every(flag))continue;
       const room=S.room;if(o.need&&!S.used['u_'+o.id])SEL=o.need;activate(o);await sl(5);
       if(o.lock&&!solved(o)){const k=val(o.lock);const v=Array.isArray(k.ans)?k.ans:k.ans;
-        if(k.kind==='dial'){$('mbody')._set(v);$('lkOk').click()}else if(k.kind==='text'){$('li').value=v;$('lf').requestSubmit()}
+        if(['dial','multi','match','sort'].includes(k.kind)){$('mbody')._set(v);$('lkOk').click()}else if(k.kind==='text'){$('li').value=v;$('lf').requestSubmit()}
         else if(k.kind==='choice'){[...document.querySelectorAll('#mbody .opt')].find(b=>b.dataset.v===k.ans).click()}
         else{const arr=Array.isArray(v)?v:String(v).split('');for(const x of arr)[...document.querySelectorAll('#mbody [data-v]')].find(b=>b.dataset.v===x).click();$('lkOk')&&$('lkOk').click()}
         await sl(30)}
@@ -357,6 +362,35 @@ const THEME={
   ]};
 
 </script>
+<script>/* 🧩 퍼즐 재설계 */
+(function(){const P=(function(){
+/* 4학년 · 전통 시장 대소동 — 경제 낱말, 막대그래프 순위, 세 자리÷두 자리 나눗셈, 지역 간 교류 (손님 수 곱셈·소수 무게는 기존) */
+const EC=L([['원하는 것에 비해 자원이 부족한 상태','희소성'],['물건을 만들거나 서비스를 제공하는 일','생산'],['돈을 내고 물건을 사서 쓰는 일','소비']],[['원하는 것에 비해 자원이 부족한 상태','희소성'],['물건을 만들거나 서비스를 제공하는 일','생산'],['돈을 내고 물건을 사서 쓰는 일','소비'],['지역끼리 물건이나 기술을 주고받는 일','교류']],[['원하는 것에 비해 자원이 부족한 상태','희소성'],['물건을 만들거나 서비스를 제공하는 일','생산'],['돈을 내고 물건을 사서 쓰는 일','소비'],['지역끼리 물건이나 기술을 주고받는 일','교류'],['한정된 돈으로 무엇을 살지 고르는 일','선택']]);
+const DV=L([['🍎 사과 96개를 8상자에','12개씩'],['🍊 귤 84개를 7상자에','12개씩'],['🍐 배 75개를 5상자에','15개씩']],[['🍎 사과 432개를 18상자에','24개씩'],['🍊 귤 375개를 15상자에','25개씩'],['🍐 배 288개를 12상자에','24개씩'],['🥔 감자 546개를 21상자에','26개씩']],[['🍎 사과 432개를 18상자에','24개씩'],['🍊 귤 375개를 15상자에','25개씩'],['🍐 배 728개를 28상자에','26개씩'],['🥔 감자 546개를 21상자에','26개씩'],['🧅 양파 893개를 47상자에','19개씩']]);
+const EX=L([['강원도 감자를 서울 시장에 팔아요.',1],['우리 집 냉장고에 반찬을 넣어요.',0],['제주도 귤을 다른 지역으로 보내요.',1],['혼자 방에서 그림을 그려요.',0]],[['강원도 감자를 서울 시장에 팔아요.',1],['우리 집 냉장고에 반찬을 넣어요.',0],['제주도 귤을 다른 지역으로 보내요.',1],['혼자 방에서 그림을 그려요.',0],['도시의 의사가 농촌 마을에 의료 봉사를 가요.',1],['교실을 청소해요.',0]],[['강원도 감자를 서울 시장에 팔아요.',1],['우리 집 냉장고에 반찬을 넣어요.',0],['제주도 귤을 다른 지역으로 보내요.',1],['혼자 방에서 그림을 그려요.',0],['도시의 의사가 농촌 마을에 의료 봉사를 가요.',1],['교실을 청소해요.',0],['두 도시가 축제 기술을 서로 나누어요.',1],['동생과 용돈을 나누어 써요.',0]]);
+return {
+ rooms:[
+ {o:{
+  sign:{title:'🪧 시장 입구 간판',html:'<div class="box">간판의 경제 낱말 카드가 떨어졌어요. 뜻에 맞는 낱말을 붙이면 상인회에서 앞치마를 빌려준대요.</div>',lock:()=>({kind:'match',left:EC.map(e=>e[0]),right:EC.map(e=>e[1]).slice().sort(),ans:EC.map(e=>e[1]),q:'어떤 낱말일까요?'}),give:'apron',done:'상인회장님이 🧑‍🍳 앞치마를 건넸어요!'},
+ },hints:()=>L(['부족한 상태는 희소성','손님 수 × 날수'],['주고받는 일은 교류','1,250 × 30 = 1,250 × 3 × 10'],['고르는 일은 선택','큰 수 곱셈은 0을 따로 떼어 계산해요.'])},
+ {o:{
+  chart:{_clear:false,lock:()=>({kind:'order',ans:SHOPS.map((s,i)=>[s+' 가게',SV[i]]).sort((a,b)=>b[1]-a[1]).map(x=>x[0]),opts:SHOPS.map(s=>s+' 가게'),q:'많이 판 가게부터 누르세요'}),html:()=>VIS.bars(SHOPS.map(s=>s+' 가게'),SV,'판매량 (개)',Math.ceil(Math.max(...SV)/50)*50,'#ff7043')+'<div class="paper">그래프판: "오늘 <b>많이 판 가게부터</b> 차례로 상을 줄 거예요."</div>'},
+  apple:{title:'🍎 과일 상자',need:'scale',locked:'과일 가게 아저씨: "저울이 고장 났어! 추를 찾아 줄래?"',html:'<div class="box">⚖️ 추를 끼우자 저울이 고쳐졌어요! 아저씨: "과일을 상자마다 <b>똑같이</b> 나누어 담아야 해. 상자 하나에 몇 개씩 들어갈지 꼬리표를 붙여 줄래?"</div>',lock:()=>({kind:'match',left:DV.map(d=>d[0]),right:[...new Set(DV.map(d=>d[1]))].sort(),ans:DV.map(d=>d[1]),q:'한 상자에 몇 개씩?'}),set:'box',done:'과일 정리 끝! 상인회 사무실 문이 열려요.'},
+ },hints:()=>L(['막대가 긴 가게부터!','96 ÷ 8 = 12'],['눈금을 잘 읽어요.','18 × 24 = 432'],['막대 끝이 눈금 사이에 있으면 어림해요.','47 × 19 = 893'])},
+ {o:{
+  safe:{lock:()=>({kind:'multi',ans:EX.filter(e=>e[1]).map(e=>e[0]),opts:EX.map(e=>e[0]),q:'지역 간 교류의 예를 모두 고르세요'}),html:'<div class="box">🔑 열쇠를 돌리자 금고 화면에 마지막 질문이 떴어요! "<b>지역 간 교류</b>의 예를 모두 고르시오." (지도 메모를 떠올려요)</div>'},
+ },hints:()=>L(['1.5 + 2.75 → 1.50 + 2.75','다른 지역끼리 주고받는 일이 교류예요.'],['소수점을 맞춰 더해요.','의료 봉사처럼 기술과 도움도 교류해요.'],['자연수 부분과 소수 부분을 나눠 더해요.','가족끼리 나누는 건 지역 간 교류가 아니에요.'])},
+ ]};
+
+})();
+const KEYS=['lock','give','set','need','when','needs','done','locked','pre','after','consume','useMsg','html','hideWhen'];
+['story','endText','title'].forEach(k=>{if(P[k])THEME[k]=P[k]});if(P.items)Object.assign(THEME.items,P.items);
+(P.rooms||[]).forEach((pr,ri)=>{const r=THEME.rooms[ri];if(!r||!pr)return;if(pr.hints)r.hints=pr.hints;if(pr.tip)r.tip=pr.tip;if(pr.name)r.name=pr.name;
+ Object.entries(pr.o||{}).forEach(([id,pt])=>{let o=r.objects.find(x=>x.id===id);if(!o){o={id};r.objects.push(o)}
+  if(pt._clear!==false&&!o.door)KEYS.forEach(k=>delete o[k]);if(o.door)['lock','need','when','needs','pre','locked','html'].forEach(k=>{if(k in pt)delete o[k]});
+  Object.assign(o,pt);delete o._clear;if(/^deco/.test(id))delete o.deco})});
+})();
+/* 🧩 끝 */</script>
 <script>
 const DART=d=>{const [k,e,t,x,y,S]=d;
 if(k==='f')return E(x,y+S*0.4,S*0.42,S*0.09,'#0000002e')+EM(x,y,e,S*0.85,'filter="url(#sh)"');
@@ -365,7 +399,7 @@ if(k==='p'){const w=S*0.95,h=S*0.95;return C(x,y-h/2-10,4,'#555')+P(`M${x} ${y-h
 const sw=S*1.1;return EM(x,y-S*0.12,e,S*0.68,'filter="url(#sh)"')+R(x-sw/2,y+S*0.24,sw,13,'#8d5a34','rx="3" filter="url(#sh)"')+R(x-sw/2+12,y+S*0.24+13,9,20,'#5e3a1f','rx="2"')+R(x+sw/2-21,y+S*0.24+13,9,20,'#5e3a1f','rx="2"')};
 /* 🧸 분위기 소품 (문제와 상관없는 기물 · 눌러 보면 설명만 나와요) */
 const DECOR=[[["f", "🏮", "시장 등불", 90, 735, 125, "시장 입구를 밝히는 등불이에요."], ["f", "🛒", "장바구니 수레", 495, 800, 125, "손님이 끌고 다니는 장바구니예요. 비어 있어요."], ["f", "🎊", "축제 현수막", 1215, 800, 125, "\"우리 동네 시장 축제!\" 현수막이에요."]], [["f", "🐟", "생선 가게", 90, 735, 125, "싱싱한 고등어가 누워 있어요. 비린내!"], ["f", "🥬", "채소 좌판", 1035, 735, 125, "배추와 무가 가득 쌓여 있어요."], ["s", "📣", "확성기", 1035, 250, 150, "\"싸요 싸요!\" 상인 아저씨가 쓰는 확성기예요."]], [["p", "📅", "장날 달력", 990, 250, 150, "\"2일, 7일은 장날\" 이라고 적혀 있어요."], ["f", "🧮", "오래된 주판", 1020, 735, 125, "할아버지 상인이 쓰던 주판이에요."], ["f", "🫖", "보리차 주전자", 1425, 735, 125, "상인들이 나눠 마시는 따뜻한 보리차예요."]]];
-DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:DART(d),html:'<div class="box">'+d[6]+'</div>'}))});
+DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>{const ex=r.objects.find(o=>o.id==='deco'+k);if(ex){if(!ex.art)ex.art=DART(d);if(!ex.title)ex.title=d[1]+' '+d[2];return}r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:DART(d),html:'<div class="box">'+d[6]+'</div>'})})});
 /* 🖼️ AI 배경 그림 */
 const ARTMAP={"rooms": [{"sign": [30, 300, 410, 580], "counter": [1000, 470, 110, 180], "door": [1180, 360, 390, 510], "deco0": [950, 100, 100, 250], "deco1": [470, 610, 130, 220], "deco2": [470, 60, 530, 190]}, {"chart": [50, 350, 300, 260], "apple": [50, 630, 460, 260], "door": [1190, 360, 380, 510], "deco0": [640, 550, 240, 230], "deco1": [820, 650, 360, 240], "deco2": [980, 470, 130, 140]}, {"rice": [50, 660, 450, 230], "safe": [1330, 400, 260, 430], "map": [70, 100, 320, 520], "deco0": [460, 230, 220, 370], "deco1": [800, 600, 220, 80], "deco2": [1030, 630, 150, 120]}], "id": "g4-market"};
 const AMbox=a=>{const ns='http://www.w3.org/2000/svg';const sv=document.createElementNS(ns,'svg');sv.setAttribute('width','1600');sv.setAttribute('height','900');sv.style.cssText='position:absolute;left:-9999px;top:0';sv.innerHTML=DEFS+a;document.body.appendChild(sv);let b={x:0,y:0,width:1,height:1};try{const g=document.createElementNS(ns,'g');while(sv.childNodes.length>1)g.appendChild(sv.childNodes[1]);sv.appendChild(g);const r=g.getBBox();b={x:r.x,y:r.y,width:r.width||1,height:r.height||1}}catch(e){}sv.remove();return b};
