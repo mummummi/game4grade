@@ -183,7 +183,7 @@ body.g1{font-size:21px}
 body.g1 .prompt{font-size:23px}
 @media (max-width:520px){h1{font-size:30px}.opt{min-width:80px;font-size:26px}.pad{grid-template-columns:repeat(5,52px)}.pad button{height:54px}}
 </style>
-<style>/*ROOM2CSS*/.obj.locked{filter:grayscale(.85) brightness(.85)}.obj.locked::after{content:"🔒";position:absolute;right:-12px;top:-12px;font-size:22px}.obj.fnd:not(.solved)::after{content:"🔎";position:absolute;right:-14px;top:-14px;font-size:18px;opacity:.75}.obj.fnd.solved{opacity:.55}.shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#0a0f2acc,#05071af2);display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;color:#cfd8ff;font-size:17px;z-index:5;pointer-events:none;text-align:center}.shade div{background:#0008;border-radius:14px;padding:6px 14px}.obj.litobj{z-index:6;filter:drop-shadow(0 0 14px #ffe082) drop-shadow(0 0 4px #fff59d);animation:lit 1.4s ease-in-out infinite}@keyframes lit{50%{transform:translate(-50%,-50%) scale(1.12)}}.bagx{margin-left:8px;padding-left:8px;border-left:2px dashed #0002}.bagx .bi{display:inline-flex;flex-direction:column;align-items:center;font-size:24px;margin:0 3px;vertical-align:middle}.bagx .bi small{font-size:11px}.rv{display:inline-block;margin-top:4px;font-size:.92em;color:#6a4fb3}</style></head>
+<style>/*ROOM2CSS*/.obj.locked{filter:grayscale(.85) brightness(.85)}.obj.locked::after{content:"🔒";position:absolute;right:-12px;top:-12px;font-size:22px}.obj.fnd:not(.solved)::after{content:"🔎";position:absolute;right:-14px;top:-14px;font-size:18px;opacity:.75}.obj.fnd.solved{opacity:.55}.shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#0a0f2acc,#05071af2);display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;color:#cfd8ff;font-size:17px;z-index:5;pointer-events:none;text-align:center}.shade div{background:#0008;border-radius:14px;padding:6px 14px}.obj.litobj{z-index:6;filter:drop-shadow(0 0 14px #ffe082) drop-shadow(0 0 4px #fff59d);animation:lit 1.4s ease-in-out infinite}@keyframes lit{50%{transform:translate(-50%,-50%) scale(1.12)}}.bagx{margin-left:8px;padding-left:8px;border-left:2px dashed #0002}.bagx .bi{display:inline-flex;flex-direction:column;align-items:center;font-size:24px;margin:0 3px;vertical-align:middle}.bagx .bi small{font-size:11px}.padtype{display:block;margin:8px auto;width:min(240px,80%);font-size:22px;text-align:center;letter-spacing:6px;padding:7px;border-radius:12px;border:2px dashed #b9a6e6;background:#fff}.padtype::placeholder{letter-spacing:0;font-size:14px;color:#999}.rv{display:inline-block;margin-top:4px;font-size:.92em;color:#6a4fb3}</style></head>
 <body class="g4">
 <div class="top"><a href="index.html">🏠</a><span class="t">🗺️ 우리 고장 탐험대</span><span class="pill" id="pill"></span><button class="ib" id="mute" title="소리">🔔</button></div>
 <div id="app"></div>
@@ -474,12 +474,14 @@ RUN.room=(sp,el,done,cx)=>{/*ROOM2*/
     };scene.appendChild(b)});
   function lock(){
     const box=h('div','lockbox');const n=sp.code.length;
-    box.innerHTML=`<h3>🔐 비밀번호 ${n}자리</h3><div class="lq">${sp.lockQ}</div><div class="slots2"></div><div class="inv" style="margin-top:8px">${inv.innerHTML}</div><div class="pad"></div><div class="msg"></div>`;
-    const sl=box.querySelector('.slots2'),pad=box.querySelector('.pad'),m=box.querySelector('.msg');let ent=[];
-    const draw=()=>{sl.innerHTML=sp.code.map((_,i)=>`<div>${sp.showOrder?`<small>${sp.order[i]}</small>`:''}${ent[i]!=null?ent[i]:''}</div>`).join('')};draw();
+    box.innerHTML=`<h3>🔐 비밀번호 ${n}자리</h3><div class="lq">${sp.lockQ}</div><div class="slots2"></div><input class="padtype" inputmode="numeric" pattern="[0-9]*" maxlength="${n}" placeholder="⌨️ 여기에 직접 입력해도 돼요" autocomplete="off"><div class="inv" style="margin-top:8px">${inv.innerHTML}</div><div class="pad"></div><div class="msg"></div>`;
+    const sl=box.querySelector('.slots2'),pad=box.querySelector('.pad'),m=box.querySelector('.msg');let ent=[];const ti=box.querySelector('.padtype');
+    const check=()=>{if(ent.length<n)return;if(ent.join('')===sp.code.join('')){good();setTimeout(()=>{closeOv();done()},500)}else{bad();shake(sl);const hn=cx.miss();m.innerHTML='비밀번호가 달라요!'+(hn?`<br>순서: ${sp.order.join(' → ')}`:'');setTimeout(()=>{ent=[];ti.value='';draw()},700)}};
+    const draw=()=>{if(document.activeElement!==ti)ti.value=ent.join('');sl.innerHTML=sp.code.map((_,i)=>`<div>${sp.showOrder?`<small>${sp.order[i]}</small>`:''}${ent[i]!=null?ent[i]:''}</div>`).join('')};draw();
     [1,2,3,4,5,6,7,8,9,0].forEach(d=>{const b=h('button','',String(d));b.dataset.d=d;b.onclick=()=>{if(ent.length>=n)return;beep(700,.05);ent.push(d);draw();
-      if(ent.length===n){if(ent.join('')===sp.code.join('')){good();setTimeout(()=>{closeOv();done()},500)}else{bad();shake(sl);const hn=cx.miss();m.innerHTML='비밀번호가 달라요!'+(hn?`<br>순서: ${sp.order.join(' → ')}`:'');setTimeout(()=>{ent=[];draw()},700)}}};pad.appendChild(b)});
-    const bk=h('button','','⌫');bk.onclick=()=>{ent.pop();draw()};pad.appendChild(bk);
+      check()};pad.appendChild(b)});
+    ti.oninput=()=>{ti.value=ti.value.replace(/\D/g,'').slice(0,n);ent=ti.value.split('').map(Number);draw();if(ent.length===n)check()};
+    const bk=h('button','','⌫');bk.onclick=()=>{ent.pop();ti.value=ent.join('');draw()};pad.appendChild(bk);
     openOv(box);
   }
   updInv();refresh();el.append(inv,scene,bub);
